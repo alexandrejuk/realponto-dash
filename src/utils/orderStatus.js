@@ -26,4 +26,35 @@ const orderStatus = [
   { value: 'free_market_with_analysis_return', label: 'Retorno Mercado Livre e Aguardando Análise' },
 ]
 
-export default orderStatus
+const translateStatus = {
+  // status de saida
+  sale: 'Venda',
+  ecommerce: 'Ecommerce',
+  free_market: 'Mercado Livre',
+  technician: 'Técnico',
+  outputs: 'Saída',
+  booking: 'Reserva',
+  tenancy: 'Locação',
+  borrowing: 'Empréstimo',
+  in_analysis: 'Em Análise',
+  repair: 'Conserto',
+  // status de entrada
+  buy: 'Compra',
+  inputs: 'Entrada',
+  exchange: 'Troca',
+  analysis_return: 'Retorno Análise',
+  repair_return: 'Retorno Conserto',
+  booking_return: 'Restorno Reserva',
+  borrowing_with_pending_analysis_return: 'Retorno Empréstimo e Aguardando Análise',
+  tenancy_with_pending_analysis_return: 'Retorno Locação e Aguardando Análise',
+  technician_return: 'Retorno Técnico',
+  technician_with_pending_analysis_return: 'Retorno Técnico e Aguardando Análise',
+  ecommerce_with_pending_analysis_return: 'Retorno Ecommerce e Aguardando Análise',
+  free_market_return: 'Retorno Mercado Livre',
+  free_market_with_analysis_return: 'Retorno Mercado Livre e Aguardando Análise',
+}
+
+export {
+  orderStatus,
+  translateStatus,
+}

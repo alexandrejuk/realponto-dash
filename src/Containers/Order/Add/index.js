@@ -10,6 +10,7 @@ import {
   Button,
   Menu,
   Dropdown,
+  Modal,
 } from 'antd'
 import {
   isEmpty,
@@ -29,6 +30,19 @@ import StepButtons from './StepButtons'
 import validatorStep from './validatorForm'
 
 const { Step } = Steps
+
+const info = () => {
+  Modal.info({
+    title: 'Deseja cancelar?',
+    content: (
+      <div>
+        <p>Ao cancelar a ordem os não em progressos serão perdidos.</p>
+      </div>
+    ),
+    onOk() {},
+    onCancel() {},
+  });
+}
 
 const steps = [
   OrderInfoStep,
@@ -54,6 +68,10 @@ const Add = ({
   const [formData, setFormData] = useState(initialFormData)
   const [formErrors, setFormErrors] = useState({})
   const [form] = Form.useForm();
+  const [customerSelected, setCustomerSelected] = useState({})
+  const [userSelected, setUserSelected] = useState({})
+
+  const navigationStep = (step) => setCurrent(step)
 
   const next = () => {
     const errors = validatorStep(formData, current)
@@ -78,6 +96,18 @@ const Add = ({
     const { name, value } = target
     const formPayload = mergeRight(formData, { [name]: value })
     setFormData(formPayload)
+
+    if (name === 'userId') {
+      setUserSelected(
+        userList.find(user => user.id === value)
+      )
+    }
+
+    if (name === 'customerId') {
+      setCustomerSelected(
+        customerList.find(customer => customer.id === value)
+      )
+    }
 
     errors = validatorStep(formPayload, current)
     setFormErrors(errors)
@@ -155,9 +185,9 @@ const Add = ({
           title="ADICIONAR ORDEM"
           extra={[
             <Dropdown overlay={menu} trigger={['click']}>
-              <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+              <Button primary type="link" onClick={e => e.preventDefault()}>
                 Alexandre Soares <DownOutlined />
-              </a>
+              </Button>
             </Dropdown>,
           ]}
         />
@@ -183,12 +213,15 @@ const Add = ({
                 formErrors={formErrors}
                 handleRemoveItem={handleRemoveItem}
                 form={form}
+                customerSelected={customerSelected}
+                userSelected={userSelected}
+                navigationStep={navigationStep}
               />
             </Col>
           </Row>
           <Row justify="end">
             <Col span={12} style={{ textAlign: "left" }}>
-              <Button type="text" onClick={goToManagerOrder}>
+              <Button type="text" onClick={info}>
                 Cancelar
               </Button>
             </Col>

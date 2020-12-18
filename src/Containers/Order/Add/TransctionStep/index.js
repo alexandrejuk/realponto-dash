@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Select, Typography } from 'antd'
-import orderStatus from '../../../../utils/orderStatus'
+import { orderStatus } from '../../../../utils/orderStatus'
 
 const { Option } = Select
 const { Title, Text } = Typography
