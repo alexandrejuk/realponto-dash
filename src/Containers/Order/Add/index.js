@@ -2,17 +2,31 @@ import React, { useState } from 'react'
 import {
   PageHeader,
   Card,
+  Form,
   Row,
   Col,
   Steps,
   message,
+  Button,
+  Menu,
+  Dropdown,
 } from 'antd'
+import {
+  isEmpty,
+  mergeRight,
+  lte,
+  length,
+  find,
+  propEq,
+} from 'ramda'
 
+import { DownOutlined } from '@ant-design/icons'
 import OrderInfoStep from './OrderInfoStep'
 import TransactionStep from './TransctionStep'
 import ProductStep from './ProductStep'
 import ConfirmStep from './ConfirmStep'
 import StepButtons from './StepButtons'
+import validatorStep from './validatorForm'
 
 const { Step } = Steps
 
@@ -27,27 +41,32 @@ const initialFormData = {
   customerId: '',
   userId: '',
   status: '',
-  statusProduct: '',
-  productId: '',
+  products: [],
 }
 
 const Add = ({
+  goToManagerOrder,
   productList,
   customerList,
   userList,
 }) => {
   const [current, setCurrent] = useState(0)
   const [formData, setFormData] = useState(initialFormData)
-  const [productsAdded, setProductsAdded] = useState([])
-  const [productSelected, setProductSelected] = useState({})
+  const [formErrors, setFormErrors] = useState({})
+  const [form] = Form.useForm();
 
   const next = () => {
-    console.log(formData)
-    setCurrent(current + 1)
+    const errors = validatorStep(formData, current)
+
+    if (errors && errors.products) {
+      message.error('É necessário adicionar pelo menos um produto!')
+    }
+
+    setFormErrors(errors)
+    isEmpty(errors) && setCurrent(current + 1)
   }
 
   const prev = () => {
-    console.log(formData)
     setCurrent(current - 1)
   }
 
@@ -55,26 +74,78 @@ const Add = ({
   const ComponentStep = steps[current]
 
   const handleOnChange = ({ target }) => {
+    let errors = {}
     const { name, value } = target
-    if (name === 'productId') {
-      setProductSelected(productList.find(product => product.id === value))
-      // console.log(JSON.parse(JSON.stringify(value)))
-      console.log('adicionar o nome e o id do produto para colocarmos na tabela depois do adicionar')
-    }
-    setFormData({...formData, [name]: value })
+    const formPayload = mergeRight(formData, { [name]: value })
+    setFormData(formPayload)
+
+    errors = validatorStep(formPayload, current)
+    setFormErrors(errors)
   }
 
-  const handleAddProduct = () => {
-    setProductsAdded([
-      ...productsAdded,
-      {
-        productId: formData.productId,
-        quantity: formData.quantity,
-        statusProduct: formData.statusProduct,
-        name: productSelected.name,
-      }
-    ])
+  const handleAddProduct = (values) => {
+    let errors = {}
+    const findProduct = (
+      lte(0, length(productList))
+      && find(propEq('id', values.productId), productList)
+    )
+
+    errors = validatorStep(values)
+    setFormErrors(errors)
+
+    const findProductAdded = formData.products.find(product => (
+      product.productId === values.productId
+      && product.statusProduct === values.statusProduct
+    ))
+
+    if (findProductAdded) {
+      isEmpty(errors) && setFormData({
+        ...formData,
+        products: formData.products.map(product => (
+          product.productId === values.productId
+          && product.statusProduct === values.statusProduct
+            ? ({...product, quantity: product.quantity + values.quantity })
+            : product
+        ))
+      })
+    } else {
+      isEmpty(errors) && setFormData({
+        ...formData,
+        products: [
+          ...formData.products,
+          {...values, name: findProduct.name },
+        ]
+      })
+    }
+
+
+    return form.resetFields()
   }
+
+  const handleRemoveItem = productRemove => {
+    const notEqual = productItem => {
+      if(
+        productItem.productId === productRemove.productId
+        && productItem.statusProduct === productRemove.statusProduct
+      ) {
+        return
+      }
+      return productItem
+    }
+
+    setFormData({
+      ...formData,
+      products: formData.products.filter(notEqual)
+    })
+  }
+
+  const menu = (
+    <Menu onClick={() => console.log('aqui')} style={{ width: 300 }}>
+      <Menu.Item key="1">1st menu item</Menu.Item>
+      <Menu.Item key="2">2nd memu item</Menu.Item>
+      <Menu.Item key="3">3rd menu item</Menu.Item>
+    </Menu>
+  )
 
   return (
     <Row gutter={[8, 8]}>
@@ -82,6 +153,13 @@ const Add = ({
         <PageHeader
           onBack={() => window.history.back()}
           title="ADICIONAR ORDEM"
+          extra={[
+            <Dropdown overlay={menu} trigger={['click']}>
+              <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                Alexandre Soares <DownOutlined />
+              </a>
+            </Dropdown>,
+          ]}
         />
       </Col>
       <Col span={24}>
@@ -99,13 +177,22 @@ const Add = ({
                 formData={formData}
                 handleOnChange={handleOnChange}
                 handleAddProduct={handleAddProduct}
-                productsAdded={productsAdded}
                 customerList={customerList}
                 userList={userList}
                 productList={productList}
+                formErrors={formErrors}
+                handleRemoveItem={handleRemoveItem}
+                form={form}
               />
             </Col>
-            <Col span={24}>
+          </Row>
+          <Row justify="end">
+            <Col span={12} style={{ textAlign: "left" }}>
+              <Button type="text" onClick={goToManagerOrder}>
+                Cancelar
+              </Button>
+            </Col>
+            <Col span={12} style={{ textAlign: "right" }}>
               <StepButtons
                 current={current}
                 steps={steps.length}

@@ -1,18 +1,23 @@
 import React from 'react'
 import {
   Button,
+  Col,
   Form,
   InputNumber,
   Select,
   Radio,
+  Row,
   Table,
   Typography,
 } from 'antd'
 
 const { Option } = Select
 const { Title } = Typography
-
-const columns = [
+const requiredRule = [{
+  required: true,
+  message: 'Campo obrigatório!',
+}]
+const columns = handleRemoveItem => ([
   {
     title: 'Produto',
     dataIndex: 'name',
@@ -27,8 +32,8 @@ const columns = [
   },
   {
     title: 'Análise?',
-    dataIndex: 'quantity',
-    key: 'quantity',
+    dataIndex: 'statusProduct',
+    key: 'statusProduct',
     fixed: 'left',
     render: (value) => <>{value ? 'Sim' : 'Não'}</>,
   },
@@ -36,82 +41,94 @@ const columns = [
     title: '',
     key: 'operation',
     fixed: 'right',
-    render: () => (
-      <Button type="link" danger>
+    render: (_, record) => (
+      <Button
+        type="link"
+        danger
+        onClick={() => handleRemoveItem(record)}
+      >
         Remover
       </Button>
     ),
   },
-]
+])
 
 const ProductStep = ({
   formData,
-  handleOnChange,
   handleAddProduct,
+  handleRemoveItem,
   productsAdded,
   productList,
+  form,
 }) => {
   const OptionComponent = ({ id, name }) => (
     <Option key={id} value={id}>{name}</Option>
   )
 
-  const changeFormValue = name => value => handleOnChange({
-    target: {
-      name,
-      value,
-    }
-  })
   return (
     <>
       <Title level={4}>PRODUTOS</Title>
       <p>Adicione os produtos que irão compor a ordem</p>
-      <Form
-        layout="inline"
-        initialValues={formData}
-      >
-
-        <Form.Item
-          name="productId"
-          label="Produto"
-          hasFeedback
-        >
-          <Select
-            placeholder="Selecione o produto"
-            onChange={changeFormValue('productId')}
-            style={{ width: 400 }}
-            notFoundContent="Nenhum produto encontrado!"
-          >
-            {productList.map(OptionComponent)}
-          </Select>
-        </Form.Item>
-        <Form.Item label="Quantidade" name="quantity">
-          <InputNumber style={{ width: 200 }} min={1} onChange={changeFormValue('quantity')} />
-        </Form.Item>
-        <Form.Item
-          name="statusProduct"
-          label="Análise?"
-        >
-          <Radio.Group onChange={handleOnChange} name="statusProduct">
-            <Radio value={true}>Sim</Radio>
-            <Radio value={false}>Não</Radio>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item
-          name=""
-          label=""
-        >
-          <Button onClick={handleAddProduct} type="primary">
-            Adicionar Produto
-          </Button>
-        </Form.Item>
+      <Form layout="vertical" onFinish={handleAddProduct} form={form}>
+        <Row gutter={[8, 8]}>
+          <Col span={6}>
+            <Form.Item
+              name="productId"
+              label="Produto"
+              style={{ marginBottom: '4px' }}
+              rules={requiredRule}
+            >
+              <Select
+                placeholder="Selecione o produto"
+                notFoundContent="Nenhum produto encontrado!"
+                allowClear
+              >
+                {productList.map(OptionComponent)}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              label="Quantidade"
+              name="quantity"
+              style={{ marginBottom: '4px' }}
+              rules={requiredRule}
+            >
+              <InputNumber
+                style={{ width: "100%" }}
+                min={1}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item
+              name="statusProduct"
+              label="Análise?"
+              style={{ marginBottom: '4px' }}
+              rules={requiredRule}
+            >
+              <Radio.Group name="statusProduct">
+                <Radio value={true}>Sim</Radio>
+                <Radio value={false}>Não</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item label=" ">
+              <Button htmlType="submit" type="primary">
+                Adicionar Produto
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
       <Table
         style={{
           marginTop: 50,
           marginBottom: 50,
         }}
-        columns={columns}
-        dataSource={productsAdded}
+        columns={columns(handleRemoveItem)}
+        dataSource={formData.products}
         locale={{ emptyText: "Nenhum produto adicionado a ordem" }}
       />
     </>

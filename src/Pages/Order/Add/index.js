@@ -44,11 +44,16 @@ const Add = () => {
     }
   }
 
+  const goToManagerOrder = () => {
+    console.log('manager order')
+  }
+
   return (
     <AddContainer
       customerList={customerList}
       userList={userList}
       productList={productList}
+      goToManagerOrder={goToManagerOrder}
     />
   )
 }
