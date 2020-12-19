@@ -28,10 +28,10 @@ const ConfirmStep = ({
         <Button type="text" onClick={() => navigationStep(0)}>Editar</Button>
       </Col>
 
-      { customerSelected.name && (
+      { customerSelected && customerSelected.name && (
           <Col span={24}>
             <p style={{ marginBottom: 0 }}>Nome do cliente</p>
-            <Title level={5}>{customerSelected.name }</Title>
+            <Title level={5}>{customerSelected && customerSelected.name }</Title>
           </Col>
         )
       }
@@ -64,7 +64,7 @@ const ConfirmStep = ({
           </Col>
         </Row>
         {formData.products.map(product => (
-          <Row>
+          <Row key={product.key}>
             <Col span={12}>
               <Title level={5}>{product.name}</Title>
             </Col>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {
-  PageHeader,
   Card,
   Form,
   Row,
@@ -8,8 +7,6 @@ import {
   Steps,
   message,
   Button,
-  Menu,
-  Dropdown,
   Modal,
 } from 'antd'
 import {
@@ -21,7 +18,6 @@ import {
   propEq,
 } from 'ramda'
 
-import { DownOutlined } from '@ant-design/icons'
 import OrderInfoStep from './OrderInfoStep'
 import TransactionStep from './TransctionStep'
 import ProductStep from './ProductStep'
@@ -63,6 +59,7 @@ const Add = ({
   productList,
   customerList,
   userList,
+  handleSubmit,
 }) => {
   const [current, setCurrent] = useState(0)
   const [formData, setFormData] = useState(initialFormData)
@@ -88,7 +85,15 @@ const Add = ({
     setCurrent(current - 1)
   }
 
-  const done = () => message.success('Processing complete!')
+  const done = async () => {
+   try {
+    await handleSubmit(formData)
+    message.success('Ordem criada com sucesso!')
+   } catch (error) {
+     message.error('Não foi possível criar ordem!')
+   }
+  }
+
   const ComponentStep = steps[current]
 
   const handleOnChange = ({ target }) => {
@@ -125,7 +130,7 @@ const Add = ({
 
     const findProductAdded = formData.products.find(product => (
       product.productId === values.productId
-      && product.statusProduct === values.statusProduct
+      && product.analysis === values.analysis
     ))
 
     if (findProductAdded) {
@@ -133,7 +138,7 @@ const Add = ({
         ...formData,
         products: formData.products.map(product => (
           product.productId === values.productId
-          && product.statusProduct === values.statusProduct
+          && product.analysis === values.analysis
             ? ({...product, quantity: product.quantity + values.quantity })
             : product
         ))
@@ -143,7 +148,11 @@ const Add = ({
         ...formData,
         products: [
           ...formData.products,
-          {...values, name: findProduct.name },
+          {
+            ...values,
+            name: findProduct.name,
+            key: `${values.quantity}-${values.productId}-${values.analysis}`,
+          },
         ]
       })
     }
@@ -169,29 +178,8 @@ const Add = ({
     })
   }
 
-  const menu = (
-    <Menu onClick={() => console.log('aqui')} style={{ width: 300 }}>
-      <Menu.Item key="1">1st menu item</Menu.Item>
-      <Menu.Item key="2">2nd memu item</Menu.Item>
-      <Menu.Item key="3">3rd menu item</Menu.Item>
-    </Menu>
-  )
-
   return (
     <Row gutter={[8, 8]}>
-      <Col span={24}>
-        <PageHeader
-          onBack={() => window.history.back()}
-          title="ADICIONAR ORDEM"
-          extra={[
-            <Dropdown overlay={menu} trigger={['click']}>
-              <Button primary type="link" onClick={e => e.preventDefault()}>
-                Alexandre Soares <DownOutlined />
-              </Button>
-            </Dropdown>,
-          ]}
-        />
-      </Col>
       <Col span={24}>
         <Card bordered={false}>
           <Steps current={current}>

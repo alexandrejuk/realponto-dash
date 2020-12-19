@@ -1,52 +1,80 @@
 import React from 'react'
 import { Menu, Layout } from 'antd'
+import { withRouter } from 'react-router-dom'
 import {
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
+  HomeOutlined,
+  ShrinkOutlined,
+  BlockOutlined,
+  TeamOutlined,
 } from '@ant-design/icons'
 
 const { Sider, Content } = Layout
+const menuItems = [
+  {
+    icon: <HomeOutlined />,
+    label: 'Resumo',
+    key: '/dashboard',
+  },
+  {
+    icon: <TeamOutlined />,
+    label: 'Clientes',
+    key: '/customer/manager',
+  },
+  {
+    icon: <BlockOutlined />,
+    label: 'Produtos',
+    key: '/product/manager',
+  },
+  {
+    icon: <ShrinkOutlined />,
+    label: 'Ordens',
+    key: '/order/manager',
+  },
+]
 
 const LayoutComponent = ({
-  children
-}) => (
-  <Layout>
-    <Sider
-      theme="light"
-      collapsible
-      collapsed={false}
-      width={256}
-      trigger={null}
-    >
-      <Menu
-        theme="ligth"
-        mode="inline"
-        defaultSelectedKeys={['1']}
-        style={{ width: 256 }}
-      >
-        <Menu.Item key="1" icon={<UserOutlined />}>
-          nav 1
-        </Menu.Item>
-        <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-          nav 2
-        </Menu.Item>
-        <Menu.Item key="3" icon={<UploadOutlined />}>
-          nav 3
-        </Menu.Item>
-      </Menu>
-    </Sider>
-    <Layout >
-      <Content
-        style={{
-          padding: 16,
-          minHeight: '100vh',
-        }}
-      >
-        { children || 'Nenhum conteúdo criado!' }
-      </Content>
-    </Layout>
-  </Layout>
-)
+  children,
+  history,
+}) => {
+  const goTo = ({ key }) => history.push(key)
 
-export default LayoutComponent
+  return (
+    <Layout>
+      <Sider
+        theme="light"
+        collapsible
+        collapsed={false}
+        width={256}
+        trigger={null}
+      >
+        <Menu
+          theme="ligth"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          style={{ width: 256 }}
+        >
+          {menuItems.map(menuItem => (
+            <Menu.Item
+              {...menuItem}
+              onClick={goTo}
+            >
+              {menuItem.label}
+            </Menu.Item>
+          ))}
+        </Menu>
+      </Sider>
+      <Layout >
+        <Content
+          style={{
+            padding: 16,
+            minHeight: '100vh',
+          }}
+        >
+          { children || 'Nenhum conteúdo criado!' }
+        </Content>
+      </Layout>
+    </Layout>
+  )
+}
+
+export default withRouter(LayoutComponent)

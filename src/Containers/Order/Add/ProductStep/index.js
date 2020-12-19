@@ -17,6 +17,7 @@ const requiredRule = [{
   required: true,
   message: 'Campo obrigatório!',
 }]
+
 const columns = handleRemoveItem => ([
   {
     title: 'Produto',
@@ -32,8 +33,8 @@ const columns = handleRemoveItem => ([
   },
   {
     title: 'Análise?',
-    dataIndex: 'statusProduct',
-    key: 'statusProduct',
+    dataIndex: 'analysis',
+    key: 'analysis',
     fixed: 'left',
     render: (value) => <>{value ? 'Sim' : 'Não'}</>,
   },
@@ -49,7 +50,7 @@ const columns = handleRemoveItem => ([
       >
         Remover
       </Button>
-    ),
+    )
   },
 ])
 
@@ -57,7 +58,6 @@ const ProductStep = ({
   formData,
   handleAddProduct,
   handleRemoveItem,
-  productsAdded,
   productList,
   form,
 }) => {
@@ -102,12 +102,12 @@ const ProductStep = ({
           </Col>
           <Col span={4}>
             <Form.Item
-              name="statusProduct"
+              name="analysis"
               label="Análise?"
               style={{ marginBottom: '4px' }}
               rules={requiredRule}
             >
-              <Radio.Group name="statusProduct">
+              <Radio.Group name="analysis">
                 <Radio value={true}>Sim</Radio>
                 <Radio value={false}>Não</Radio>
               </Radio.Group>
@@ -130,6 +130,7 @@ const ProductStep = ({
         columns={columns(handleRemoveItem)}
         dataSource={formData.products}
         locale={{ emptyText: "Nenhum produto adicionado a ordem" }}
+        pagination={{ position: 'none' }}
       />
     </>
   )

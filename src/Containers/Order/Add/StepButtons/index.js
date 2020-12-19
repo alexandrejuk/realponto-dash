@@ -23,7 +23,7 @@ const StepButtons = ({
 
     {current === steps - 1 && (
       <Button type="primary" onClick={done}>
-        Criar ordem
+        Criar Ordem
       </Button>
     )}
   </div>

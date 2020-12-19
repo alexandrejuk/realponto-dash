@@ -39,7 +39,6 @@ const OrderInfoStep = ({
               placeholder="Selecione o usuário"
               onChange={changeFormValue('userId')}
               notFoundContent="Nenhum usuário encontrado!"
-              allowClear
             >
               {userList.map(OptionComponent)}
             </Select>

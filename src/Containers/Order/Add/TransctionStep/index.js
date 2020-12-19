@@ -33,7 +33,6 @@ const TransactionStep = ({
               placeholder="Selecione o tipo da ordem"
               onChange={changeFormValue('status')}
               notFoundContent="Nenhum tipo de ordem encontrado!"
-              allowClear
             >
               {orderStatus.map(({ value, label }) => (
                 <Option key={value} value={value}>{label}</Option>
