@@ -26,14 +26,16 @@ const Manager = ({
     }
   }
 
-  const goToAddOrder = () => history.push('/order/add')
+  const goToAddOrder = () => history.push('/order/inputs')
   const goToOrderDetail = (id) => history.push(`/order/detail/${id}`)
+  const goToAddOrderOut = () => history.push('/order/outups')
 
   return (
     <ManagerContainer
       datasource={datasource}
       goToAddOrder={goToAddOrder}
       goToOrderDetail={goToOrderDetail}
+      goToAddOrderOut={goToAddOrderOut}
     />
   )
 }

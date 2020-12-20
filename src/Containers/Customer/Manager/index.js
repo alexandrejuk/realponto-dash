@@ -1,8 +1,12 @@
 import React from 'react'
+import { Card } from 'antd'
+import CustomerList from './CustomerList'
 
 const Manager = () => {
   return (
-    <h1>Manager cliente</h1>
+    <Card bordered={false}>
+      <CustomerList />
+    </Card>
   )
 }
 

@@ -41,8 +41,8 @@ const info = () => {
 }
 
 const steps = [
-  OrderInfoStep,
   TransactionStep,
+  OrderInfoStep,
   ProductStep,
   ConfirmStep,
 ]
@@ -55,7 +55,6 @@ const initialFormData = {
 }
 
 const Add = ({
-  goToManagerOrder,
   productList,
   customerList,
   userList,

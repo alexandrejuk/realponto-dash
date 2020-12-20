@@ -43,6 +43,7 @@ const chartData = [ {
 const Manager = ({
   datasource,
   goToAddOrder,
+  goToAddOrderOut,
   goToOrderDetail,
 }) => {
   const [radioValue, setRadioValue] = useState('table')
@@ -54,20 +55,28 @@ const Manager = ({
   return (
     <Card bordered={false}>
       <Row gutter={[0, 20]}>
-        <Col span={16}>
+        <Col span={8}>
           <Title level={5}>
             18/11/2020 - 18/11/2020
             <span style={{ fontWeight: 'normal' }}> | </span>
             768 <span style={{ fontWeight: 'normal' }}>Ordens</span>
           </Title>
         </Col>
-        <Col span={8} style={{ textAlign: 'right' }}>
+        <Col span={16} style={{ textAlign: 'right' }}>
+          <Button
+            onClick={goToAddOrderOut}
+            style={{ marginRight: '16px'}}
+            icon={<PlusOutlined />}
+            danger
+          >
+            Adicionar Saída
+          </Button>
           <Button
             onClick={goToAddOrder}
             style={{ marginRight: '16px'}}
             icon={<PlusOutlined />}
           >
-            Adicionar Ordem
+            Adicionar Entrada
           </Button>
           <Radio.Group
             options={options}

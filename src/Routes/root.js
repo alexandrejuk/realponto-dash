@@ -8,8 +8,15 @@ import ProductManager from '../Pages/Product/Manager'
 
 const RootRoutes = [{
   component: OrderAdd,
-  title: 'ADICIONAR ORDEM',
-  path: '/order/add',
+  title: 'ADICIONAR ORDEM DE ENTRADA',
+  path: '/order-inputs',
+  exact: true,
+  goBack: true,
+},
+{
+  component: OrderAdd,
+  title: 'ADICIONAR ORDEM DE SAÍDA',
+  path: '/order-outputs',
   exact: true,
   goBack: true,
 },

@@ -1,3 +1,4 @@
+const { applySpec, pipe, map } = require('ramda')
 const orderStatus = [
   // status de saida
   { value: 'sale', label: 'Venda' },
@@ -78,13 +79,13 @@ const statusColors = {
   borrowing_with_pending_analysis_return: '#2db7f5',
   tenancy_with_pending_analysis_return: '#87d068',
   technician_return: '#108ee9',
-  technician_with_pending_analysis_return: 'gold',
-  ecommerce_with_pending_analysis_return: 'blue',
-  free_market_return: 'volcano',
-  free_market_with_analysis_return: 'red',
+  technician_with_pending_analysis_return: '#0052cc',
+  ecommerce_with_pending_analysis_return: '#A5D0A5',
+  free_market_return: '#171383',
+  free_market_with_analysis_return: '#5666C8',
 }
 
-const parseStatusToType = {
+const parseStatusToTypeLable = {
   sale: 'Saída',
   ecommerce: 'Saída',
   free_market: 'Saída',
@@ -111,9 +112,69 @@ const parseStatusToType = {
   free_market_with_analysis_return: 'Entrada',
 }
 
-export {
-  orderStatus,
-  translateStatus,
-  statusColors,
-  parseStatusToType,
+const ENUM_TRANSACTION = [
+  'sale',
+  'ecommerce',
+  'free_market',
+  'technician',
+  'outputs',
+  'booking',
+  'tenancy',
+  'borrowing',
+  'in_analysis',
+  'repair',
+  'buy',
+  'inputs',
+  'exchange',
+  'pending_analysis',
+  'analysis_return',
+  'repair_return',
+  'booking_return',
+  'borrowing_with_pending_analysis_return',
+  'tenancy_with_pending_analysis_return',
+  'technician_return',
+  'technician_with_pending_analysis_return',
+  'ecommerce_with_pending_analysis_return',
+  'free_market_return',
+  'free_market_with_analysis_return',
+]
+
+const parseStatusToType = {
+  sale: 'outputs',
+  ecommerce: 'outputs',
+  free_market: 'outputs',
+  technician: 'outputs',
+  outputs: 'outputs',
+  booking: 'outputs',
+  tenancy: 'outputs',
+  borrowing: 'outputs',
+  in_analysis: 'outputs',
+  repair: 'outputs',
+  buy: 'inputs',
+  inputs: 'inputs',
+  exchange: 'inputs',
+  pending_analysis: 'inputs',
+  analysis_return: 'inputs',
+  repair_return: 'inputs',
+  booking_return: 'inputs',
+  borrowing_with_pending_analysis_return: 'inputs',
+  tenancy_with_pending_analysis_return: 'inputs',
+  technician_return: 'inputs',
+  technician_with_pending_analysis_return: 'inputs',
+  ecommerce_with_pending_analysis_return: 'inputs',
+  free_market_return: 'inputs',
+  free_market_with_analysis_return: 'inputs',
 }
+
+const statusSpec = value => ({
+  label: value,
+  value: translateStatus[value],
+  color: statusColors[value],
+  type: parseStatusToType[value],
+  type_label: parseStatusToTypeLable[value],
+})
+
+const buildStatus = pipe(
+  map(statusSpec)
+)
+console.log(buildStatus(ENUM_TRANSACTION))
