@@ -1,18 +1,22 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Button, Typography } from 'antd'
+import { Row, Col, Card, Button, Typography, Input, Checkbox } from 'antd'
 import Add from '../Add'
 import Edit from '../Edit'
 import ProductList from './ProductList'
 
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
+const CheckboxGroup = Checkbox.Group;
 
 const { Title } = Typography
+const plainOptions = ['Ativo', 'Inativo']
+const defaultCheckedList = ['Ativo', 'Inativo']
 
 const Manager = ({
   handleSubmitUpdate,
   handleSubmit,
   products,
 }) => {
+  const [checkedList, setCheckedList] = useState(defaultCheckedList);
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [productSelected, setProductSelected] = useState({})
@@ -36,6 +40,10 @@ const Manager = ({
   const handleCloseModalEdit = () => {
     setVisibleEdit(false)
     setProductSelected({})
+  }
+
+  const onChange = list => {
+    setCheckedList(list)
   }
 
   return (
@@ -74,8 +82,31 @@ const Manager = ({
       </Col>
       <Col span={24}>
         <Card bordered={false}>
+          <Row gutter={[8, 8]}>
+            <Col span={15}>
+              <Input placeholder="Filtre por nome" prefix={<SearchOutlined />} />
+            </Col>
+            <Col span={4}>
+              <CheckboxGroup
+                style={{ paddingTop: '5px' }}
+                options={plainOptions}
+                value={checkedList}
+                onChange={onChange}
+                name="activated"
+              />
+            </Col>
+
+            <Col span={5} style={{ textAlign: 'right' }}>
+              <Button style={{ marginRight: '16px' }}>Limpar Filtros</Button>
+              <Button type="primary">Filtrar</Button>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+      <Col span={24}>
+        <Card bordered={false}>
           <ProductList
-            datasource={products}
+            datasource={products.source}
             chooseProduct={handleChooseProduct}
           />
         </Card>

@@ -34,7 +34,7 @@ const TransactionStep = ({
               onChange={changeFormValue('status')}
               notFoundContent="Nenhum tipo de ordem encontrado!"
             >
-              {orderStatus.map(({ value, label }) => (
+              {orderStatus && orderStatus.map(({ value, label }) => (
                 <Option key={value} value={value}>{label}</Option>
               ))}
             </Select>

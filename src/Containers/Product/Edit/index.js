@@ -13,7 +13,7 @@ const Edit = ({
     <Modal
       width={350}
       visible={visible}
-      title="EDITAR UM PRODUTO"
+      title="ALTERAR UM PRODUTO"
       okText="Editar Produto"
       cancelText="Cancelar"
       onCancel={() => {

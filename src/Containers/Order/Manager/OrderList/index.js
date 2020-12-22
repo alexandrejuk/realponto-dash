@@ -1,11 +1,5 @@
 import React from 'react'
 import { Button, Table, Tag } from 'antd'
-
-import {
-  translateStatus,
-  statusColors,
-  parseStatusToType,
-} from '../../../../utils/orderStatus'
 import formattedDate from '../../../../utils/parserDate'
 
 const columns = goToOrderDetail => ([
@@ -14,8 +8,8 @@ const columns = goToOrderDetail => ([
     dataIndex: 'status',
     key: 'status',
     fixed: 'left',
-    render: (text) => (
-      <Tag color={statusColors[text]}>{translateStatus[text]}</Tag>
+    render: (_, record) => (
+      <Tag color={record.status.color}>{record.status.value}</Tag>
     )
   },
   {
@@ -23,7 +17,7 @@ const columns = goToOrderDetail => ([
     dataIndex: 'id',
     key: 'id',
     fixed: 'left',
-    render: (_, record) => parseStatusToType[record.status]
+    render: (_, record) => record.status.typeLabel
   },
   {
     title: 'Data da ordem',
@@ -37,11 +31,11 @@ const columns = goToOrderDetail => ([
     dataIndex: 'user.name',
     key: 'user.name',
     fixed: 'left',
-    render: (_, record) => record.user.name
+    render: (_, record) => record.user && record.user.name
   },
   {
     title: 'Revisar?',
-    dataIndex: 'pending_review',
+    dataIndex: 'pendingReview',
     fixed: 'left',
     render: (text) => text ? 'Sim' : 'Não'
   },
@@ -63,11 +57,13 @@ const columns = goToOrderDetail => ([
 const OrderList = ({
   datasource,
   goToOrderDetail,
+  handlePagination,
 }) => {
   return (
     <Table
       columns={columns(goToOrderDetail)}
       dataSource={datasource}
+      pagination={{ onChange: handlePagination }}
     />
   )
 }

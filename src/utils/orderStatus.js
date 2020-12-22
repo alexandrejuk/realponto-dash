@@ -1,4 +1,3 @@
-const { applySpec, pipe, map } = require('ramda')
 const orderStatus = [
   // status de saida
   { value: 'sale', label: 'Venda' },
@@ -166,15 +165,9 @@ const parseStatusToType = {
   free_market_with_analysis_return: 'inputs',
 }
 
-const statusSpec = value => ({
-  label: value,
-  value: translateStatus[value],
-  color: statusColors[value],
-  type: parseStatusToType[value],
-  type_label: parseStatusToTypeLable[value],
-})
-
-const buildStatus = pipe(
-  map(statusSpec)
-)
-console.log(buildStatus(ENUM_TRANSACTION))
+export {
+  translateStatus,
+  statusColors,
+  orderStatus,
+  parseStatusToType
+}

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Row, Col, Typography } from 'antd'
-
 import {
   BarChart,
   Bar,
@@ -10,18 +9,15 @@ import {
   CartesianGrid,
   Tooltip,
 } from 'recharts'
+
 import formattedDate from '../../../../utils/parserDate'
 import { Tag } from 'antd'
-
-import {
-  translateStatus,
-  statusColors
-} from '../../../../utils/orderStatus'
 
 const { Title } = Typography
 
 const Chart = ({
-  data
+  data,
+  chartSettings
 }) => (
   <Row gutter={[0, 16]}>
     <Col span={24}>
@@ -64,14 +60,14 @@ const Chart = ({
             labelFormatter={value => formattedDate(value, 'DD/MM/YYYY')}
           />
           {
-              Object.keys(translateStatus).map(status => (
+              chartSettings.map(({ label, color, value }) => (
                 <Bar
-                  dataKey={status}
-                  fill={statusColors[status]}
-                  key={status}
-                  name={translateStatus[status]}
+                  dataKey={label}
+                  fill={color}
+                  key={label}
+                  name={value}
                   stackId="a"
-                  stroke={statusColors[status]}
+                  stroke={color}
                   type="monotone"
                 />
               ))
@@ -83,10 +79,10 @@ const Chart = ({
       <Col span={24}>
         <Title level={5}>LEGENDAS</Title>
       </Col>
-      {Object.keys(translateStatus).map((status, index) => (
-        <Col key={`${status}-${index}`} xs={24} sm={12} md={8} lg={9} xl={6}>
-          <Tag color={statusColors[status]}>
-            {translateStatus[status]}
+      {chartSettings.map(({ color, value }) => (
+        <Col key={`${color}-${value}`} xs={24} sm={12} md={8} lg={9} xl={6}>
+          <Tag color={color}>
+            {value}
           </Tag>
         </Col>
       ))}

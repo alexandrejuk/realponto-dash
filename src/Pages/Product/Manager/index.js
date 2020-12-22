@@ -5,7 +5,7 @@ import ManagerContainer from '../../../Containers/Product/Manager'
 const baseUrl = 'http://localhost:3003/api'
 
 const Manager = () => {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState({})
 
   useEffect(() => {
     getAllProducts()
