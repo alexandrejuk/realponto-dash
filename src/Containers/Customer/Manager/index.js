@@ -1,44 +1,56 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Card, Input, Row, Col } from 'antd'
 import CustomerList from './CustomerList'
 import { SearchOutlined } from '@ant-design/icons'
 
+const Manager = ({
+  source,
+  handlerCustomerFilter,
+}) => {
+  const [search, setSearch] = useState('')
+  const onChangeSearch = ({ target }) => {
+    setSearch(target.value)
+  }
 
-const datasource = [
-  {
-    name: 'Caio Vinicius',
-    document: '1234567890'
-  },
-  {
-    name: 'Allan Teixeira Lima',
-    document: '1234567891'
-  },
-  {
-    name: 'Alexandre Soares',
-    document: '123456789'
-  },
-]
+  const clearFilters = () => {
+    setSearch('')
+    handlerCustomerFilter('')
+  }
 
-const Manager = () => {
+  const handleFilter = () => {
+    handlerCustomerFilter(search)
+  }
 
   return (
    <Row gutter={[8, 8]}>
      <Col span={24}>
       <Card bordered={false}>
         <Row gutter={[8, 8]}>
-          <Col span={19}>
-            <Input placeholder="Filtre por nome ou documento." prefix={<SearchOutlined />} />
+          <Col span={20}>
+            <Input
+              placeholder="Filtre por nome ou documento."
+              prefix={<SearchOutlined />}
+              value={search}
+              onChange={onChangeSearch}
+            />
           </Col>
-          <Col span={5} style={{ textAlign: 'right' }}>
-            <Button style={{ marginRight: '16px' }}>Limpar Filtros</Button>
-            <Button type="primary">Filtrar</Button>
+          <Col span={4} style={{ textAlign: 'right' }}>
+            <Button
+              style={{ marginRight: '16px' }}
+              onClick={clearFilters}
+            >
+              Limpar Filtros
+            </Button>
+            <Button type="primary" onClick={handleFilter}>
+              Filtrar
+            </Button>
           </Col>
         </Row>
       </Card>
     </Col>
     <Col span={24}>
       <Card bordered={false}>
-        <CustomerList datasource={datasource} />
+        <CustomerList datasource={source} />
       </Card>
     </Col>
    </Row>
