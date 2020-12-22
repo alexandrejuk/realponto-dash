@@ -9,17 +9,21 @@ const CheckboxGroup = Checkbox.Group;
 
 const { Title } = Typography
 const plainOptions = ['Ativo', 'Inativo']
-const defaultCheckedList = ['Ativo', 'Inativo']
+const initialFilterState = {
+  activated: ['Ativo', 'Inativo'],
+  name: '',
+}
 
 const Manager = ({
   handleSubmitUpdate,
   handleSubmit,
   products,
+  handleGetProductsByFilters,
 }) => {
-  const [checkedList, setCheckedList] = useState(defaultCheckedList);
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [productSelected, setProductSelected] = useState({})
+  const [filters, setFilters] = useState(initialFilterState)
 
   const onSubmitUpdate = values => {
     handleSubmitUpdate({...values, id: productSelected.id })
@@ -42,8 +46,33 @@ const Manager = ({
     setProductSelected({})
   }
 
-  const onChange = list => {
-    setCheckedList(list)
+  const onChange = ({ target }) => {
+    const { name, value } = target
+    if(name === 'activated') {
+      console.log('name', name, value)
+      return setFilters({
+        ...filters,
+        [name]: (
+          value.length === 0
+          ? initialFilterState.activated
+          : value
+        )
+      })
+    }
+
+    return setFilters({
+      ...filters,
+      [name]: value
+    })
+  }
+
+  const handleFilters = async () => {
+    await handleGetProductsByFilters(filters)
+  }
+
+  const clearFilters = async () => {
+    setFilters(initialFilterState)
+    await handleGetProductsByFilters({})
   }
 
   return (
@@ -84,21 +113,35 @@ const Manager = ({
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
             <Col span={15}>
-              <Input placeholder="Filtre por nome" prefix={<SearchOutlined />} />
-            </Col>
-            <Col span={4}>
-              <CheckboxGroup
-                style={{ paddingTop: '5px' }}
-                options={plainOptions}
-                value={checkedList}
+              <Input
+                placeholder="Filtre por nome"
+                prefix={<SearchOutlined />}
+                name='name'
+                value={filters.name}
                 onChange={onChange}
-                name="activated"
+              />
+            </Col>
+            <Col span={4} style={{ paddingTop: '5px' }}>
+              <CheckboxGroup
+                options={plainOptions}
+                value={filters.activated}
+                onChange={value => onChange({ target: { name: 'activated', value }})}
               />
             </Col>
 
             <Col span={5} style={{ textAlign: 'right' }}>
-              <Button style={{ marginRight: '16px' }}>Limpar Filtros</Button>
-              <Button type="primary">Filtrar</Button>
+              <Button
+                style={{ marginRight: '16px' }}
+                onClick={clearFilters}
+              >
+                Limpar Filtros
+              </Button>
+              <Button
+                type="primary"
+                onClick={handleFilters}
+              >
+                Filtrar
+              </Button>
             </Col>
           </Row>
         </Card>

@@ -112,7 +112,6 @@ const Manager = ({
                 options={plainOptions}
                 value={filters.pendingReview}
                 onChange={value => onChange({ target: { name: 'pendingReview', value }})}
-                name="activated"
               />
             </Col>
             <Col span={4} style={{ textAlign: 'right' }}>
