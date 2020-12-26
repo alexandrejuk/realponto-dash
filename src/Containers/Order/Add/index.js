@@ -32,7 +32,7 @@ const info = () => {
     title: 'Deseja cancelar?',
     content: (
       <div>
-        <p>Ao cancelar a ordem os não em progressos serão perdidos.</p>
+        <p>Ao cancelar a ordem os dados em progressos serão perdidos.</p>
       </div>
     ),
     onOk() {},
@@ -58,6 +58,7 @@ const Add = ({
   productList,
   customerList,
   userList,
+  statusList,
   handleSubmit,
 }) => {
   const [current, setCurrent] = useState(0)
@@ -201,6 +202,7 @@ const Add = ({
                 handleRemoveItem={handleRemoveItem}
                 form={form}
                 customerSelected={customerSelected}
+                statusList={statusList}
                 userSelected={userSelected}
                 navigationStep={navigationStep}
               />

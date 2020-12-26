@@ -1,28 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import buildOrderSpec from './orderSpec'
 import AddContainer from '../../../Containers/Order/Add'
-
-const baseUrl = 'http://localhost:3003/api'
+import { getAll as getAllUserService } from '../../../Services/User'
+import { getAll as getAllProductService } from '../../../Services/Product'
+import { getAll as getAllCustomerService } from '../../../Services/Customer'
+import getAllStatusService from '../../../Services/Status'
 
 const Add = () => {
   const [userList, setUserList] = useState([])
   const [customerList, setCustomerList] = useState([])
   const [productList, setProductList] = useState([])
   const [key, setKey] = useState(0)
-
+  const [statusList, setStatusList] = useState([])
   useEffect(() => {
     getAllUser()
     getAllCustomer()
     getAllProduct()
+    getllStatus()
   }, [])
 
 
   const getAllProduct = async () => {
     try {
-      const { data } = await axios.get(`${baseUrl}/products`)
-      setProductList(data)
+      const { data: { source }} = await getAllProductService({ activated: true })
+      setProductList(source)
     } catch (error) {
 
     }
@@ -30,8 +32,8 @@ const Add = () => {
 
   const getAllUser = async () => {
     try {
-      const { data } = await axios.get(`${baseUrl}/users`)
-      setUserList(data)
+      const { data: { source }} = await getAllUserService({ activated: true })
+      setUserList(source)
     } catch (error) {
 
     }
@@ -39,8 +41,17 @@ const Add = () => {
 
   const getAllCustomer = async () => {
     try {
-      const { data } = await axios.get(`${baseUrl}/customers`)
-      setCustomerList(data)
+      const { data: { source }} = await getAllCustomerService()
+      setCustomerList(source)
+    } catch (error) {
+
+    }
+  }
+
+  const getllStatus = async () => {
+    try {
+      const { data: { source }} = await getAllStatusService({ type: 'inputs' })
+      setStatusList(source)
     } catch (error) {
 
     }
@@ -50,14 +61,14 @@ const Add = () => {
     console.log('manager order')
   }
 
-  const handleSubmit = async values => {
-    try {
-      await axios.post(`${baseUrl}/orders`, buildOrderSpec(values))
-      setKey(key + 1)
-    } catch (error) {
+  // const handleSubmit = async values => {
+  //   try {
+  //     await axios.post(`${baseUrl}/orders`, buildOrderSpec(values))
+  //     setKey(key + 1)
+  //   } catch (error) {
 
-    }
-  }
+  //   }
+  // }
 
   return (
     <AddContainer
@@ -65,8 +76,9 @@ const Add = () => {
       customerList={customerList}
       userList={userList}
       productList={productList}
+      statusList={statusList}
       goToManagerOrder={goToManagerOrder}
-      handleSubmit={handleSubmit}
+      handleSubmit={console.log}
     />
   )
 }

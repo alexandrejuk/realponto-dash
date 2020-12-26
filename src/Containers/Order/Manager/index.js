@@ -131,7 +131,8 @@ const Manager = ({
           <Row gutter={[0, 20]}>
             <Col span={8}>
               <Title level={5}>
-                {formattedDate(filters.dates[0], 'DD/MM/YYYY')} - {formattedDate(filters.dates[1], 'DD/MM/YYYY')}
+                {filters.dates && filters.dates[0] && formattedDate(filters.dates[0], 'DD/MM/YYYY - ')}
+                {filters.dates && filters.dates[1] && formattedDate(filters.dates[1], 'DD/MM/YYYY')}
                 <span style={{ fontWeight: 'normal' }}> | </span>
                 {datasource.total} <span style={{ fontWeight: 'normal' }}>Ordens</span>
               </Title>

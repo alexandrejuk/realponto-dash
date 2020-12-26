@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card, Typography, Row, Col, Tag, Steps } from 'antd'
+import { Card, Typography, Row, Col, Tag, Steps, Table, Button } from 'antd'
 import formattedDate from '../../../utils/parserDate'
 
 import {
@@ -38,8 +38,50 @@ const orderDetail = {
   "serialNumbers": []
 }
 
-const Detail = () => {
+const columns = (detail) => (
+  [
+    {
+      title: 'Status',
+      dataIndex: 'status.value',
+      render: (text, record) => (
+        <Tag color={record.status.color}>{record.status.value}</Tag>
+      )
+    },
+    {
+      title: 'Descrição',
+      dataIndex: 'productName',
+    },
+    {
+      title: 'Quantidade',
+      dataIndex: 'quantity',
+    },
+    {
+      title: '',
+      dataIndex: 'productId',
+      key: 'action',
+      render: (text, record) => (
+        <Button
+          onClick={() => detail(text)}
+          type="link"
+          primary
+        >
+          Detalhes
+        </Button>
+      ),
+    },
+  ]
+)
+
+const Detail = ({
+  order,
+}) => {
   const [productMovimentation, setProductMovimentation] = useState([])
+
+  const handleProductMovimentation = (productId) => {
+    const movimentation = order.transactions.filter(product => product.productId === productId)
+    setProductMovimentation(movimentation)
+  }
+
   return (
     <Row gutter={[16, 16]}>
       <Col span={24}>
@@ -47,19 +89,19 @@ const Detail = () => {
           <Row gutter={[8, 8]}>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Usuário</p>
-              <Title level={5}>{orderDetail.user.name}</Title>
+              <Title level={5}>{order.user.name}</Title>
             </Col>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Status</p>
               <Title level={5}>
-                <Tag color={statusColors[orderDetail.status]}>{translateStatus[orderDetail.status]}</Tag>
+                <Tag color={order.status.color}>{order.status.value}</Tag>
               </Title>
             </Col>
             <Col span={6}>
             </Col>
             <Col span={6} style={{ textAlign: "right" }}>
               <p style={{ marginBottom: '4px' }}>
-                Data de criação: {formattedDate(orderDetail.createdAt, 'DD/MM/YYYY')}
+                Data de criação: {formattedDate(order.createdAt, 'DD/MM/YYYY')}
               </p>
             </Col>
           </Row>
@@ -67,34 +109,80 @@ const Detail = () => {
       </Col>
 
       <Col span={16}>
-        <Card bordered={false}>
-          <Row gutter={[8, 8]}>
-            <Col span={6}>
-              <p style={{ marginBottom: '4px' }}>Usuário</p>
-              <Title level={5}>{orderDetail.user.name}</Title>
-            </Col>
-            <Col span={6}>
-              <p style={{ marginBottom: '4px' }}>Status</p>
-              <Title level={5}>
-                <Tag color={statusColors[orderDetail.status]}>{translateStatus[orderDetail.status]}</Tag>
-              </Title>
-            </Col>
-            <Col span={6}>
-            </Col>
-            <Col span={6} style={{ textAlign: "right" }}>
-              <p style={{ marginBottom: '4px' }}>
-                Data de criação: {formattedDate(orderDetail.createdAt, 'DD/MM/YYYY')}
-              </p>
-            </Col>
-          </Row>
-        </Card>
+        <Row gutter={[8, 16]}>
+          <Col span={24}>
+            <Card bordered={false}>
+              <Row gutter={[8, 8]}>
+              <Col span={24}>
+                  <p>Produtos</p>
+                </Col>
+                <Col span={24}>
+                  <Table
+                    columns={columns(handleProductMovimentation)}
+                    dataSource={order.orderProducts}
+                  />
+                </Col>
+
+              </Row>
+            </Card>
+          </Col>
+          <Col span={24}>
+            <Card bordered={false}>
+              <Row gutter={[8, 8]}>
+                <Col span={24}>
+                  <p>Detalhes do cliente</p>
+                </Col>
+                <Col span={8}>
+                  <p style={{ marginBottom: '4px' }}>Nome do cliente</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+                <Col span={8}>
+                  <p style={{ marginBottom: '4px' }}>CPF/CNPJ</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+                <Col span={8}>
+                  <p style={{ marginBottom: '4px' }}>Telefone</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+                <Col span={16}>
+                  <p style={{ marginBottom: '4px' }}>Rua</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+                <Col span={4}>
+                  <p style={{ marginBottom: '4px' }}>Nº</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+                <Col span={4}>
+                  <p style={{ marginBottom: '4px' }}>Complemento</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+                <Col span={8}>
+                  <p style={{ marginBottom: '4px' }}>Bairro</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+                <Col span={8}>
+                  <p style={{ marginBottom: '4px' }}>Cidade</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+                <Col span={4}>
+                  <p style={{ marginBottom: '4px' }}>Estado</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+                <Col span={4}>
+                  <p style={{ marginBottom: '4px' }}>Cep</p>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
       </Col>
 
       <Col span={8}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
-            <Col span={24} style={{ textAlign: "center", marginBottom: "16px"}}>
-              <Title level={5}>Histório de Movimentação do Produto</Title>
+            <Col span={24}>
+              <p>Histório de Movimentação do Produto</p>
             </Col>
             <Col span={24}>
               <Steps direction="vertical">
@@ -107,11 +195,11 @@ const Detail = () => {
                   }) => (
                   <Step
                     key={id}
-                    title={translateStatus[status]}
+                    title={status.value}
                     description={
                       <>
-                        {formattedDate(createdAt, 'DD/MM/YYYY - HH:mm')} <br />
-                        {product.name} <br /> Quatidade: <b>{quantity}</b>
+                        {product.name} - Quatidade: <b>{quantity}</b><br />
+                        {formattedDate(createdAt, 'DD/MM/YYYY - HH:mm')}
                       </>
                     }
                   />

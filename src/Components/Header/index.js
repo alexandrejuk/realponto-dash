@@ -11,19 +11,19 @@ import { DownOutlined } from '@ant-design/icons'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { LeftOutlined } from '@ant-design/icons'
 
-const menu = (
-  <Menu onClick={() => console.log('aqui')} style={{ width: 300 }}>
-    <Menu.Item key="1">Dados cadastrais</Menu.Item>
-    <Menu.Item key="2">Gerenciamento de equipe</Menu.Item>
-    <Menu.Item key="3">Alterar senha</Menu.Item>
-    <Menu.Item key="4">Sair</Menu.Item>
-  </Menu>
-)
-
 const Header = ({
   rootRoutes,
   history,
 }) => {
+
+  const menu = (
+    <Menu onClick={({ key }) => history.push(key)} style={{ width: 300 }}>
+      <Menu.Item key="/account-myinfo">Dados cadastrais</Menu.Item>
+      <Menu.Item key="/account-myteam">Gerenciamento de equipe</Menu.Item>
+      <Menu.Item key="/account-password">Alterar senha</Menu.Item>
+      <Menu.Item key="4">Sair</Menu.Item>
+    </Menu>
+  )
 
   const renderHeader = props => () => (
     <Row>

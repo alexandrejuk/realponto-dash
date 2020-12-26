@@ -6,6 +6,10 @@ const getAllOrder = (params = {}) => {
   return axios.get(`${baseUrl}/orders`, { params })
 }
 
+const getOrderById = (orderId) => {
+  return axios.get(`${baseUrl}/orders/${orderId}`)
+}
+
 const getAllOrderSummary = (params = {}) => {
   return axios.get(`${baseUrl}/orders-summary`, { params })
 }
@@ -13,4 +17,5 @@ const getAllOrderSummary = (params = {}) => {
 export {
   getAllOrder,
   getAllOrderSummary,
+  getOrderById,
 }

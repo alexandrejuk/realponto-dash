@@ -5,11 +5,35 @@ import CustomerAdd from '../Pages/Customer/Add'
 import CustomerDetail from '../Pages/Customer/Detail'
 import CustomerManager from '../Pages/Customer/Manager'
 import ProductManager from '../Pages/Product/Manager'
+import UpdateMyPassword from '../Pages/UpdateMyPassword'
+import MyTeam from '../Pages/MyTeam'
+import MyInfo from '../Pages/MyInfo'
 
 const RootRoutes = [{
   component: OrderAdd,
   title: 'ADICIONAR ORDEM DE ENTRADA',
   path: '/order-inputs',
+  exact: true,
+  goBack: true,
+},
+{
+  component: MyInfo,
+  title: 'MINHA CONTA',
+  path: '/account-myinfo',
+  exact: true,
+  goBack: true,
+},
+{
+  component: MyTeam,
+  title: 'MINHA EQUIPE',
+  path: '/account-myteam',
+  exact: true,
+  goBack: true,
+},
+{
+  component: UpdateMyPassword,
+  title: 'ALTERAR SENHA',
+  path: '/account-password',
   exact: true,
   goBack: true,
 },

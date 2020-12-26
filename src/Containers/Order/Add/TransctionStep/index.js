@@ -1,6 +1,5 @@
 import React from 'react'
 import { Form, Select, Typography } from 'antd'
-import { orderStatus } from '../../../../utils/orderStatus'
 
 const { Option } = Select
 const { Title, Text } = Typography
@@ -9,6 +8,7 @@ const TransactionStep = ({
   formErrors,
   formData,
   handleOnChange,
+  statusList,
 }) => {
   const changeFormValue = name => value => handleOnChange({
     target: {
@@ -34,8 +34,8 @@ const TransactionStep = ({
               onChange={changeFormValue('status')}
               notFoundContent="Nenhum tipo de ordem encontrado!"
             >
-              {orderStatus && orderStatus.map(({ value, label }) => (
-                <Option key={value} value={value}>{label}</Option>
+              {statusList && statusList.map(({ value, label }) => (
+                <Option key={label} value={label}>{value}</Option>
               ))}
             </Select>
           </Form.Item>
