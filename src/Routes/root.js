@@ -1,4 +1,5 @@
 import OrderAdd from '../Pages/Order/Add'
+import OutOrder from '../Pages/Order/OutOrder'
 import OrderDetail from '../Pages/Order/Detail'
 import OrderManager from '../Pages/Order/Manager'
 import CustomerAdd from '../Pages/Customer/Add'
@@ -38,7 +39,7 @@ const RootRoutes = [{
   goBack: true,
 },
 {
-  component: OrderAdd,
+  component: OutOrder,
   title: 'ADICIONAR ORDEM DE SAÍDA',
   path: '/order-outputs',
   exact: true,

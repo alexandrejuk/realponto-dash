@@ -34,7 +34,7 @@ const TransactionStep = ({
               onChange={changeFormValue('status')}
               notFoundContent="Nenhum tipo de ordem encontrado!"
             >
-              {statusList && statusList.filter(status => status.label !== 'pending_analysis').map(({ value, label }) => (
+              {statusList && statusList.map(({ value, label }) => (
                 <Option key={label} value={label}>{value}</Option>
               ))}
             </Select>

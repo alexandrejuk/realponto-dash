@@ -17,7 +17,6 @@ const ConfirmStep = ({
         <p>Confirme abaixo os dados informados e finalize a criação dessa ordem</p>
       </Col>
 
-
       { userSelected && userSelected.name && (
         <>
           <Divider />
@@ -30,6 +29,7 @@ const ConfirmStep = ({
           </Col>
         </>
       )}
+
 
 
       { customerSelected && customerSelected.name && (
