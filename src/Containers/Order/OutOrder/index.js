@@ -7,7 +7,6 @@ import {
   Steps,
   message,
   Button,
-  Modal,
 } from 'antd'
 import {
   isEmpty,
@@ -26,19 +25,6 @@ import StepButtons from './StepButtons'
 import validatorStep from './validatorForm'
 
 const { Step } = Steps
-
-const info = () => {
-  Modal.info({
-    title: 'Deseja cancelar?',
-    content: (
-      <div>
-        <p>Ao cancelar a ordem os dados em progressos serão perdidos.</p>
-      </div>
-    ),
-    onOk() {},
-    onCancel() {},
-  });
-}
 
 const steps = [
   TransactionStep,
@@ -60,6 +46,7 @@ const Add = ({
   userList,
   statusList,
   handleSubmit,
+  goToOrder,
 }) => {
   const [current, setCurrent] = useState(0)
   const [formData, setFormData] = useState(initialFormData)
@@ -210,7 +197,7 @@ const Add = ({
           </Row>
           <Row justify="end">
             <Col span={12} style={{ textAlign: "left" }}>
-              <Button type="text" onClick={info}>
+              <Button type="text" onClick={goToOrder}>
                 Cancelar
               </Button>
             </Col>

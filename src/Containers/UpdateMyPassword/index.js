@@ -2,7 +2,8 @@ import React from 'react'
 import { Row, Col, Card, Input, Form, Button } from 'antd'
 
 const UpdateMyPassword = ({
-  handleSubmit
+  handleSubmit,
+  goToOrder,
 }) => {
   const [form] = Form.useForm()
 
@@ -65,7 +66,7 @@ const UpdateMyPassword = ({
               <Input type="password" />
             </Form.Item>
             <Col span={24} style={{ textAlign: 'right' }}>
-              <Button type="outline" danger style={{ marginRight: '14px' }}>Cancelar</Button>
+              <Button type="outline" danger style={{ marginRight: '14px' }} onClick={goToOrder}>Cancelar</Button>
               <Button type="primary" htmlType="submit">Salvar alterações</Button>
             </Col>
           </Form>

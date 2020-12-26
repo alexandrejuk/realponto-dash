@@ -28,13 +28,29 @@ const columns = (detail) => (
       dataIndex: 'productId',
       key: 'action',
       render: (text, record) => (
+       <>
+         <Button
+          onClick={() => detail(text)}
+          type="text"
+        >
+          Detalhes
+        </Button>
+        {/* abrir uma modal para escolher o que quer fazer adicionar numeros serial, ou algum tipo de said
+          para produtos com status diferentes de aguardando analise nao podemos lançar saida só podemos lançar
+          os numeros de series na moda de numero de serie temos que colocar o nome do tecnico que revisou
+          nas ordens de saida podemos buscar os numeros de series que serao usados
+          para status com analise pendente temos que colocar o fluxo no front para aceitar in_analysis, depois que tiver o retorno
+          de return_anaylisis podemos adicionar o numero de seria no campo de coloca in_analysis temos que ter a quantidade para saber quantos estao sendo analisado
+          para ordem do tipo de saida só podemos adidionar o
+        // */}
         <Button
           onClick={() => detail(text)}
           type="link"
           primary
         >
-          Detalhes
+          Adicionar Evento
         </Button>
+       </>
       ),
     },
   ]
@@ -118,6 +134,8 @@ const Detail = ({
                   <p style={{ marginBottom: '4px' }}>Telefone</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.phone}</Title>
                 </Col>
+
+                {/* temos que adicionar a tabela de endereço no backend depois só descomentar o codigo abaixo */}
                 {/* <Col span={16}>
                   <p style={{ marginBottom: '4px' }}>Rua</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.name}</Title>

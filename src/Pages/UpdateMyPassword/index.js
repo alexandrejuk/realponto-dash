@@ -1,9 +1,11 @@
-import { values } from 'ramda'
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import UpdateMyPasswordContainer from '../../Containers/UpdateMyPassword'
 import { updateUserPassword as updateUserPasswordService } from '../../Services/User'
 
-const UpdateMyPassword = () => {
+const UpdateMyPassword = ({
+  history,
+}) => {
 
   const handleSubmit = async (values) => {
     try {
@@ -12,11 +14,15 @@ const UpdateMyPassword = () => {
 
     }
   }
+
+  const goToOrder = () => history.push('/order/manager')
+
   return (
     <UpdateMyPasswordContainer
       handleSubmit={handleSubmit}
+      goToOrder={goToOrder}
     />
   )
 }
 
-export default UpdateMyPassword
+export default withRouter(UpdateMyPassword)

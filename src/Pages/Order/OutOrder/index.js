@@ -6,8 +6,11 @@ import { getAll as getAllUserService } from '../../../Services/User'
 import { getAll as getAllProductService } from '../../../Services/Product'
 import { getAll as getAllCustomerService } from '../../../Services/Customer'
 import getAllStatusService from '../../../Services/Status'
+import { withRouter } from 'react-router-dom'
 
-const OutOrder = () => {
+const OutOrder = ({
+  history,
+}) => {
   const [userList, setUserList] = useState([])
   const [customerList, setCustomerList] = useState([])
   const [productList, setProductList] = useState([])
@@ -70,6 +73,8 @@ const OutOrder = () => {
   //   }
   // }
 
+  const goToOrder = () => history.push('/order/manager')
+
   return (
     <OutOrderContainer
       key={key}
@@ -79,8 +84,9 @@ const OutOrder = () => {
       statusList={statusList}
       goToManagerOrder={goToManagerOrder}
       handleSubmit={console.log}
+      goToOrder={goToOrder}
     />
   )
 }
 
-export default OutOrder
+export default withRouter(OutOrder)
