@@ -73,7 +73,7 @@ const Add = ({
   //   }
   // }
 
-  const goToOrder = () => history.push('/order/manager')
+  const goToOrder = () => history.push('/logged/order/manager')
 
   return (
     <AddContainer

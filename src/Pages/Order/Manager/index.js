@@ -67,9 +67,9 @@ const Manager = ({
     }
   }
 
-  const goToAddOrder = () => history.push('/order-inputs')
-  const goToOrderDetail = (id) => history.push(`/order/detail/${id}`)
-  const goToAddOrderOut = () => history.push('/order-outputs')
+  const goToAddOrder = () => history.push('/logged/order-inputs')
+  const goToOrderDetail = (id) => history.push(`/logged/order/detail/${id}`)
+  const goToAddOrderOut = () => history.push('/logged/order-outputs')
 
   return (
     <ManagerContainer

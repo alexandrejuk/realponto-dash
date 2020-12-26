@@ -43,7 +43,7 @@ const UpdateMyPassword = ({
               label="Senha"
               rules={[{ required: true, message: 'Campo obrigatório!' }]}
             >
-              <Input type="password" />
+              <Input.Password />
             </Form.Item>
             <Form.Item
               name="newPassword"
@@ -53,7 +53,7 @@ const UpdateMyPassword = ({
                 { required: true, message: 'Campo obrigatório!' },
               ]}
             >
-              <Input type="password" />
+              <Input.Password />
             </Form.Item>
             <Form.Item
               name="confirmPassword"
@@ -63,7 +63,7 @@ const UpdateMyPassword = ({
                 { required: true, message: 'Campo obrigatório!' },
               ]}
             >
-              <Input type="password" />
+              <Input.Password />
             </Form.Item>
             <Col span={24} style={{ textAlign: 'right' }}>
               <Button type="outline" danger style={{ marginRight: '14px' }} onClick={goToOrder}>Cancelar</Button>

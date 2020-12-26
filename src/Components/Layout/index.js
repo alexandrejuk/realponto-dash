@@ -13,22 +13,22 @@ const menuItems = [
   {
     icon: <HomeOutlined />,
     label: 'Resumo',
-    key: '/dashboard',
+    key: '/logged/dashboard',
   },
   {
     icon: <TeamOutlined />,
     label: 'Clientes',
-    key: '/customer/manager',
+    key: '/logged/customer/manager',
   },
   {
     icon: <BlockOutlined />,
     label: 'Produtos',
-    key: '/product/manager',
+    key: '/logged/product/manager',
   },
   {
     icon: <ShrinkOutlined />,
     label: 'Ordens',
-    key: '/order/manager',
+    key: '/logged/order/manager',
   },
 ]
 

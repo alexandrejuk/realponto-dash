@@ -16,12 +16,22 @@ const Header = ({
   history,
 }) => {
 
+  const handleNavegator = ({ key }) => {
+    if(key === 'loggout') {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user.name')
+      history.push('/login')
+    }
+
+    return history.push(key)
+  }
+
   const menu = (
-    <Menu onClick={({ key }) => history.push(key)} style={{ width: 300 }}>
-      <Menu.Item key="/account-myinfo">Dados cadastrais</Menu.Item>
-      <Menu.Item key="/account-myteam">Gerenciamento de equipe</Menu.Item>
-      <Menu.Item key="/account-password">Alterar senha</Menu.Item>
-      <Menu.Item key="4">Sair</Menu.Item>
+    <Menu onClick={handleNavegator} style={{ width: 300 }}>
+      <Menu.Item key="/logged/account-myinfo">Dados cadastrais</Menu.Item>
+      <Menu.Item key="/logged/account-myteam">Gerenciamento de equipe</Menu.Item>
+      <Menu.Item key="/logged/account-password">Alterar senha</Menu.Item>
+      <Menu.Item key="loggout">Sair</Menu.Item>
     </Menu>
   )
 
