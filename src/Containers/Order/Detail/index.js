@@ -1,42 +1,10 @@
 import React, { useState } from 'react'
 import { Card, Typography, Row, Col, Tag, Steps, Table, Button } from 'antd'
 import formattedDate from '../../../utils/parserDate'
-
-import {
-  translateStatus,
-  statusColors,
-} from '../../../utils/orderStatus'
+import { cpf, cnpj } from 'cpf-cnpj-validator'
 
 const { Step } = Steps
 const { Title } = Typography
-
-const orderDetail = {
-  "id": "4aad5b4e-35c2-45f1-8cbf-5a0ff5ba2ffa",
-  "status": "sale",
-  "pending_review": true,
-  "createdAt": "2020-12-18T17:09:53.030Z",
-  "updatedAt": "2020-12-18T17:09:53.030Z",
-  "customerId": null,
-  "userId": "f01e39d3-faf5-4342-8dcf-d8e90bdf1cc8",
-  "transactions": [
-    {
-      "status": "pending_analysis",
-      "type": "inputs",
-      "quantity": 1,
-      "productId": "02c43f51-d86b-4545-9322-0020f01b7efb",
-      "id": "b4d9f111-70d8-42c4-977e-485541e948f1",
-      "product": {
-        "activated": true,
-        "name": "Airpods apple com estojo de recarga"
-      }
-    }
-  ],
-  "user": {
-    "activated": true,
-    "name": "Alexandre Soares"
-  },
-  "serialNumbers": []
-}
 
 const columns = (detail) => (
   [
@@ -89,12 +57,12 @@ const Detail = ({
           <Row gutter={[8, 8]}>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Usuário</p>
-              <Title level={5}>{order.user.name}</Title>
+              <Title level={5}>{order.user && order.user.name}</Title>
             </Col>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Status</p>
               <Title level={5}>
-                <Tag color={order.status.color}>{order.status.value}</Tag>
+                <Tag color={order.status && order.status.color}>{order.status && order.status.value}</Tag>
               </Title>
             </Col>
             <Col span={6}>
@@ -134,44 +102,50 @@ const Detail = ({
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Nome do cliente</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.name}</Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>CPF/CNPJ</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{
+                    order.customer
+                    && order.customer.document.length > 11
+                      ? cnpj.format(order.customer.document)
+                      : cpf.format(order.customer.document)
+                    }
+                  </Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Telefone</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.phone}</Title>
                 </Col>
-                <Col span={16}>
+                {/* <Col span={16}>
                   <p style={{ marginBottom: '4px' }}>Rua</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.name}</Title>
                 </Col>
                 <Col span={4}>
                   <p style={{ marginBottom: '4px' }}>Nº</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.name}</Title>
                 </Col>
                 <Col span={4}>
                   <p style={{ marginBottom: '4px' }}>Complemento</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.name}</Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Bairro</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.name}</Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Cidade</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.name}</Title>
                 </Col>
                 <Col span={4}>
                   <p style={{ marginBottom: '4px' }}>Estado</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.name}</Title>
                 </Col>
                 <Col span={4}>
                   <p style={{ marginBottom: '4px' }}>Cep</p>
-                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer.name}</Title>
-                </Col>
+                  <Title level={5} style={{ fontWeight: 'normal' }}>{order.customer && order.customer.name}</Title>
+                </Col> */}
               </Row>
             </Card>
           </Col>

@@ -13,11 +13,17 @@ const createUser = async (values) => {
 }
 
 const updateUser = async (values) => {
-  return await axios.put(`${baseUrl}/users/${values.id}`, values,{ headers })
+  return await axios.put(`${baseUrl}/users/${values.id}`, values, { headers })
+}
+
+
+const updateUserPassword = async (values) => {
+  return await axios.put(`${baseUrl}/users-update-password`, values, { headers })
 }
 
 export {
   getAll,
   createUser,
   updateUser,
+  updateUserPassword,
 }

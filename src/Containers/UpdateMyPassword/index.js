@@ -1,7 +1,29 @@
 import React from 'react'
 import { Row, Col, Card, Input, Form, Button } from 'antd'
 
-const UpdateMyPassword = () => {
+const UpdateMyPassword = ({
+  handleSubmit
+}) => {
+  const [form] = Form.useForm()
+
+  const validatorPassword = (passwordPropName, shouldBeEqual = false) => ({ getFieldValue }) => {
+    const validator = (rule, value) => {
+      if (shouldBeEqual) {
+        if (!value || getFieldValue(passwordPropName) === value) {
+          return Promise.resolve();
+        }
+        return Promise.reject('Senhas não coincidem!')
+      }
+
+      if (value && getFieldValue(passwordPropName) === value) {
+        return Promise.reject('A sua nova senha deve ser diferente da sua senha antiga!')
+      }
+      return Promise.resolve()
+    };
+
+    return { validator }
+  };
+
   return (
     <Card bordered={false}>
       <Row gutter={[8, 8]}>
@@ -10,35 +32,43 @@ const UpdateMyPassword = () => {
         </Col>
         <Col span={24}>
           <Form
+            form={form}
             layout="vertical"
-            name="form_in_modal"
+            name="form_update_password"
+            onFinish={handleSubmit}
           >
             <Form.Item
-              name="oldPassword"
+              name="password"
               label="Senha"
-              rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
+              rules={[{ required: true, message: 'Campo obrigatório!' }]}
             >
               <Input type="password" />
             </Form.Item>
             <Form.Item
               name="newPassword"
               label="Nova senha"
-              rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
+              rules={[
+                validatorPassword('password', false),
+                { required: true, message: 'Campo obrigatório!' },
+              ]}
             >
               <Input type="password" />
             </Form.Item>
             <Form.Item
               name="confirmPassword"
               label="Confirme a nova senha"
-              rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
+              rules={[
+                validatorPassword('newPassword', true),
+                { required: true, message: 'Campo obrigatório!' },
+              ]}
             >
               <Input type="password" />
             </Form.Item>
+            <Col span={24} style={{ textAlign: 'right' }}>
+              <Button type="outline" danger style={{ marginRight: '14px' }}>Cancelar</Button>
+              <Button type="primary" htmlType="submit">Salvar alterações</Button>
+            </Col>
           </Form>
-        </Col>
-        <Col span={24} style={{ textAlign: 'right' }}>
-          <Button type="outline" danger style={{ marginRight: '14px' }}>Cancelar</Button>
-          <Button type="primary">Salvar alterações</Button>
         </Col>
       </Row>
     </Card>

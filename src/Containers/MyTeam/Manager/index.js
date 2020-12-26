@@ -11,7 +11,7 @@ const { Title } = Typography
 const plainOptions = ['Ativo', 'Inativo']
 const initialFilterState = {
   activated: ['Ativo', 'Inativo'],
-  name: '',
+  search: '',
 }
 
 const Manager = ({
@@ -49,7 +49,6 @@ const Manager = ({
   const onChange = ({ target }) => {
     const { name, value } = target
     if(name === 'activated') {
-      console.log('name', name, value)
       return setFilters({
         ...filters,
         [name]: (
@@ -74,8 +73,6 @@ const Manager = ({
     setFilters(initialFilterState)
     await handleGetUsersByFilters({})
   }
-
-  console.log(userSelected)
 
   return (
     <Row gutter={[8, 16]}>
@@ -116,10 +113,10 @@ const Manager = ({
           <Row gutter={[8, 8]}>
             <Col span={15}>
               <Input
-                placeholder="Filtre por nome"
+                placeholder="Filtre por nome ou email."
                 prefix={<SearchOutlined />}
-                name='name'
-                value={filters.name}
+                name='search'
+                value={filters.search}
                 onChange={onChange}
               />
             </Col>

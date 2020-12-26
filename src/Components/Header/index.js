@@ -59,7 +59,7 @@ const Header = ({
         onClick={e => e.preventDefault()}
       >
         <Button type="link" style={{ fontSize: '14px' }}>
-          Alexandre Soares <DownOutlined />
+          {localStorage.getItem('user.name') || 'Minha Conta'} <DownOutlined />
         </Button>
       </Dropdown>
       </Col>

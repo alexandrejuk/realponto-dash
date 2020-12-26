@@ -43,22 +43,28 @@ const Manager = () => {
   }
 
   const handleGetUsersByFilters = async(values) => {
-    const { name, activated } = values
+    const { search, activated } = values
+    const emailRegex = (
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
+    const isEmail =  emailRegex.test(String(search).toLowerCase())
     const checkedActivated = (
       activated && activated.length < 2 && activated.length !== 0
        ? { activated:  activated[0] === 'Inativo' ? false : true }
        : {}
     )
 
+    const query = isEmail ? { email: search } : { name: search }
+
     const buildQuerySpec = {
+      ...query,
       ...checkedActivated,
-      name,
       page,
       limit: 25
     }
 
-    const { data } = await getAll(buildQuerySpec)
-    setUsers(data)
+    const { data: { source } } = await getAll(buildQuerySpec)
+    setUsers(source)
   }
 
   return (
