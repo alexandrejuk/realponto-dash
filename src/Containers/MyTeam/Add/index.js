@@ -36,8 +36,8 @@ const Add = ({
         name="form_in_modal"
       >
         <Form.Item
-          name="name"
-          label="Nome do usuário"
+          name="email"
+          label="Email do usuário"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
         >
           <Input />

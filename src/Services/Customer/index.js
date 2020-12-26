@@ -1,17 +1,19 @@
 import axios from 'axios'
 
 const baseUrl = 'http://localhost:3003/api'
+const token = localStorage.getItem('token')
+const headers = { Authorization: `bearer ${token}` }
 
 const getAll = async (params = {}) => {
-  return await axios.get(`${baseUrl}/customers`, { params })
+  return await axios.get(`${baseUrl}/customers`, { params, headers })
 }
 
 const createCustomer = async (values) => {
-  return await axios.post(`${baseUrl}/customers`, values)
+  return await axios.post(`${baseUrl}/customers`, values, { headers })
 }
 
 const updateCustomer = async (values) => {
-  return await axios.put(`${baseUrl}/customers/${values.id}`, values)
+  return await axios.put(`${baseUrl}/customers/${values.id}`, values, { headers })
 }
 
 export {

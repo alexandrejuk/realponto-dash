@@ -45,6 +45,13 @@ const Edit = ({
         >
           <Input />
         </Form.Item>
+        <Form.Item
+          name="email"
+          label="Email do usuário"
+          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
+        >
+          <Input />
+        </Form.Item>
       </Form>
     </Modal>
   )
