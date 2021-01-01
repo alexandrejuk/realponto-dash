@@ -1,6 +1,8 @@
 import React from 'react'
 import { Menu, Layout } from 'antd'
 import { withRouter } from 'react-router-dom'
+import AdSide from '../../Components/AdSide'
+
 import {
   HomeOutlined,
   ShrinkOutlined,
@@ -62,6 +64,7 @@ const LayoutComponent = ({
             </Menu.Item>
           ))}
         </Menu>
+        <AdSide />
       </Sider>
       <Layout >
         <Content
