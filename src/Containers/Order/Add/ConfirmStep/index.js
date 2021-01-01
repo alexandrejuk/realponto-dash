@@ -1,7 +1,6 @@
 import React from 'react'
 import { Divider, Typography, Row, Col, Button } from 'antd'
 import { translateStatus } from '../../../../utils/orderStatus'
-
 const { Title } = Typography
 
 const ConfirmStep = ({
@@ -26,7 +25,7 @@ const ConfirmStep = ({
             <Title level={5}>{userSelected.name}</Title>
           </Col>
           <Col span={4} style={{ textAlign: 'right' }}>
-            <Button type="text" onClick={() => navigationStep(0)}>Editar</Button>
+            <Button type="text" onClick={() => navigationStep(1)}>Editar</Button>
           </Col>
         </>
       )}
@@ -48,7 +47,7 @@ const ConfirmStep = ({
       </Col>
 
       <Col span={4} style={{ textAlign: 'right' }}>
-        <Button type="text" onClick={() => navigationStep(1)}>Editar</Button>
+        <Button type="text" onClick={() => navigationStep(0)}>Editar</Button>
       </Col>
 
       <Divider />
@@ -78,7 +77,7 @@ const ConfirmStep = ({
             </Col>
 
             <Col span={4} style={{ textAlign: "center"}}>
-              <Title level={5}>{product.statusProduct ? 'Sim' : 'Não'}</Title>
+              <Title level={5}>{product.analysis ? 'Sim' : 'Não'}</Title>
             </Col>
           </Row>
         ))}

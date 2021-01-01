@@ -5,7 +5,6 @@ import {
   Form,
   InputNumber,
   Select,
-  Radio,
   Row,
   Table,
   Typography,
@@ -98,19 +97,6 @@ const ProductStep = ({
                 style={{ width: "100%" }}
                 min={1}
               />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item
-              name="analysis"
-              label="Análise?"
-              style={{ marginBottom: '4px' }}
-              rules={requiredRule}
-            >
-              <Radio.Group name="analysis">
-                <Radio value={true}>Sim</Radio>
-                <Radio value={false}>Não</Radio>
-              </Radio.Group>
             </Form.Item>
           </Col>
           <Col span={4}>

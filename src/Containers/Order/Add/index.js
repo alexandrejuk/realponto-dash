@@ -36,7 +36,7 @@ const steps = [
 const initialFormData = {
   customerId: '',
   userId: '',
-  status: '',
+  statusId: '',
   products: [],
 }
 

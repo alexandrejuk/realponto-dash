@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { Card, Typography, Row, Col, Tag, Steps, Table, Button } from 'antd'
 import formattedDate from '../../../utils/parserDate'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
+import AddEvent from './AddEvent'
+import AddSerialNumber from './AddSerialNumber'
 
 const { Step } = Steps
 const { Title } = Typography
 
-const columns = (detail) => (
+const columns = (detail, handleSerialNumber) => (
   [
     {
       title: 'Status',
@@ -30,7 +32,7 @@ const columns = (detail) => (
       render: (text, record) => (
        <>
          <Button
-          onClick={() => detail(text)}
+          onClick={() => detail(record)}
           type="text"
         >
           Detalhes
@@ -44,11 +46,10 @@ const columns = (detail) => (
           para ordem do tipo de saida só podemos adidionar o
         // */}
         <Button
-          onClick={() => detail(text)}
-          type="link"
-          primary
+          onClick={() => handleSerialNumber(record)}
+          type="outline"
         >
-          Adicionar Evento
+          Adicionar Número Série
         </Button>
        </>
       ),
@@ -58,13 +59,49 @@ const columns = (detail) => (
 
 const Detail = ({
   order,
+  users,
+  statusList,
+  updateOrderDetail,
+  addSerialNumber,
 }) => {
   const [productMovimentation, setProductMovimentation] = useState([])
+  const [productSelected, setProductSelected] = useState({
+    status: {
+      label: null
+    }
+  })
 
-  const handleProductMovimentation = (productId) => {
-    const movimentation = order.transactions.filter(product => product.productId === productId)
+  const [productSerialSelected, setProductSerialSelected] = useState({})
+  const [event, setEvent] = useState(false)
+  const [serial, setSerial] = useState(false)
+
+  const handleProductMovimentation = (productSelectedTable) => {
+    const movimentation = order.transactions.filter(product => product.productId === productSelectedTable.productId)
     setProductMovimentation(movimentation)
+    setProductSelected(productSelectedTable)
   }
+
+  const handleSerialNumber = (productSelectedTable) => {
+    setProductSerialSelected(productSelectedTable)
+    setSerial(true)
+  }
+
+  const selectedProductFunction = () => {
+    setEvent(true)
+  }
+
+  const closeModalEvent = () => {
+    setEvent(false)
+  }
+
+  const closeModalSerial = () => {
+    setSerial(false)
+    setProductSerialSelected({})
+  }
+
+  const customerDocument = order.customer && order.customer.document
+    ? order.customer.document
+    : ''
 
   return (
     <Row gutter={[16, 16]}>
@@ -102,7 +139,7 @@ const Detail = ({
                 </Col>
                 <Col span={24}>
                   <Table
-                    columns={columns(handleProductMovimentation)}
+                    columns={columns(handleProductMovimentation, handleSerialNumber)}
                     dataSource={order.orderProducts}
                   />
                 </Col>
@@ -123,11 +160,10 @@ const Detail = ({
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>CPF/CNPJ</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>{
-                    order.customer
-                    && order.customer.document.length > 11
-                      ? cnpj.format(order.customer.document)
-                      : cpf.format(order.customer.document)
-                    }
+                   customerDocument.length > 11
+                     ? cnpj.format(customerDocument)
+                     : cpf.format(customerDocument)
+                   }
                   </Title>
                 </Col>
                 <Col span={8}>
@@ -186,24 +222,46 @@ const Detail = ({
                     quantity,
                   }) => (
                   <Step
+                    status="finish"
                     key={id}
                     title={status.value}
                     description={
                       <>
                         {product.name} - Quatidade: <b>{quantity}</b><br />
-                        {formattedDate(createdAt, 'DD/MM/YYYY - HH:mm')}
+                        {formattedDate(createdAt, 'DD/MM/YYYY - HH:mm')} <br />
                       </>
                     }
-                  />
+                    />
                 ))}
-                {productMovimentation.length === 0 && (
+                {productMovimentation.length === 0 &&(
                   <Title level={5}>Para ver as operação selecione um produto ao lado</Title>
                 )}
               </Steps>
+              {productMovimentation.length > 0 && productSelected.status.label === 'pending_analysis' && (
+                <Button onClick={selectedProductFunction} block type="text">Adicionar Evento</Button>
+              )}
             </Col>
           </Row>
         </Card>
       </Col>
+      <AddEvent
+        visible={event}
+        users={users}
+        productSelected={productSelected}
+        productTransaction={productMovimentation}
+        statusList={statusList}
+        onCancel={closeModalEvent}
+        onCreate={updateOrderDetail}
+      />
+
+      <AddSerialNumber
+        visible={serial}
+        users={users}
+        productSelected={productSerialSelected}
+        onCancel={closeModalSerial}
+        onCreate={addSerialNumber}
+        serialNumbers={order.serialNumbers}
+      />
     </Row>
 
   )

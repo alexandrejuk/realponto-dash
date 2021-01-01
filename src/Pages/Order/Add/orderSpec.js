@@ -22,12 +22,13 @@ const getPending_review = pipe(
 )
 
 const buildProduct = orderStatus => applySpec({
-  status: ifElse(
+  statusId: ifElse(
     propEq('analysis', true),
     always('pending_analysis'),
     always(orderStatus),
   ),
   productId: prop('productId'),
+  productName: prop('name'),
   quantity: pipe(
     prop('quantity'),
     Number,
@@ -36,7 +37,7 @@ const buildProduct = orderStatus => applySpec({
 
 const buildProducts = values => pipe(
   prop('products'),
-  map(buildProduct(prop('status', values)))
+  map(buildProduct(prop('statusId', values)))
 )(values)
 
 const getCustomerId = values => {
@@ -49,10 +50,10 @@ const getCustomerId = values => {
 }
 
 const buildOrder = applySpec({
-  pending_review: getPending_review,
+  pendingReview: getPending_review,
   userId: prop('userId'),
   customerId: getCustomerId,
-  status: prop('status'),
+  statusId: prop('statusId'),
   products: buildProducts,
 })
 

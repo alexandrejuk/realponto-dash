@@ -2,7 +2,9 @@ import { set } from 'ramda'
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import DetailContainer from '../../../Containers/Order/Detail'
-import { getOrderById } from '../../../Services/Order'
+import { getOrderById, updateOrder } from '../../../Services/Order'
+import { getAll } from '../../../Services/User'
+import getAllStatusService from '../../../Services/Status'
 
 const Detail = ({
   match
@@ -29,19 +31,68 @@ const Detail = ({
       }
     }
   })
+  const [users, setUsers] = useState([])
+  const [statusList, setStatusList] = useState([])
+
   useEffect(() => {
     getOrder()
+    getAllUsers()
+    getllStatus()
   }, [])
 
+  const getllStatus = async () => {
+    try {
+      const { data: { source }} = await getAllStatusService()
+      setStatusList(source)
+    } catch (error) {
+
+    }
+  }
+
+  const getAllUsers = async () => {
+    try {
+      const { data: { source } } = await getAll({})
+      setUsers(source)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const getOrder = async () => {
-   const { data } = await getOrderById(match.params.id)
-   setOrder(data)
-   console.log(data)
+    try {
+      const { data } = await getOrderById(match.params.id)
+      setOrder(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const updateOrderDetail = async (values) => {
+    try {
+      const { data } = await updateOrder(match.params.id, values)
+      setOrder(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const addSerialNumber = async (values) => {
+    console.log(values)
+    // try {
+    //   const { data } = await updateOrder(match.params.id, values)
+    //   setOrder(data)
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
 
   return (
     <DetailContainer
       order={order}
+      users={users}
+      statusList={statusList}
+      updateOrderDetail={updateOrderDetail}
+      addSerialNumber={addSerialNumber}
     />
   )
 }

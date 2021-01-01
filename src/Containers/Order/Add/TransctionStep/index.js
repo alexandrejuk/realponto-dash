@@ -23,7 +23,7 @@ const TransactionStep = ({
       <Form layout="vertical" initialValues={formData}>
         <div style={{ height: '88px', marginBottom: '20px' }}>
           <Form.Item
-            name="status"
+            name="statusId"
             label="Tipo da ordem"
             validateStatus={formErrors && formErrors.status ? 'error' : ''}
             hasFeedback
@@ -31,11 +31,11 @@ const TransactionStep = ({
           >
             <Select
               placeholder="Selecione o tipo da ordem"
-              onChange={changeFormValue('status')}
+              onChange={changeFormValue('statusId')}
               notFoundContent="Nenhum tipo de ordem encontrado!"
             >
-              {statusList && statusList.filter(status => status.label !== 'pending_analysis').map(({ value, label }) => (
-                <Option key={label} value={label}>{value}</Option>
+              {statusList && statusList.filter(status => status.label !== 'pending_analysis').map(({ value, label, id }) => (
+                <Option key={label} value={id}>{value}</Option>
               ))}
             </Select>
           </Form.Item>
