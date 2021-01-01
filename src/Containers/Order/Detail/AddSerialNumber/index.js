@@ -11,7 +11,7 @@ const AddSerialNumber = ({
   productSelected,
 }) => {
   const [form] = Form.useForm()
-  const quantityMax = serialNumbers.filter(product => product.productId === productSelected.productId).length
+  const quantityMax = serialNumbers && serialNumbers.filter(product => product.productId === productSelected.productId).length
 
   return (
     <Modal

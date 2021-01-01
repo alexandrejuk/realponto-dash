@@ -1,4 +1,10 @@
 import React from 'react'
+import { prop } from 'ramda'
+
+import {
+  PAGARME_ENCRYPTION_KEY,
+  PAGARME_POSTBACK_URL
+} from '../../utils/env'
 
 const Plan = () => {
 
@@ -30,7 +36,7 @@ const Plan = () => {
       customerData: 'false',
       createToken: 'true',
       paymentMethods: 'credit_card',
-      postback_url: 'https://dev.menthor.co/api/pagarme/postback',
+      postback_url: PAGARME_POSTBACK_URL,
       items: [{
         id: `subscription-${title}`,
         title,

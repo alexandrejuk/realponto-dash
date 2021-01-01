@@ -63,6 +63,7 @@ const Detail = ({
   statusList,
   updateOrderDetail,
   addSerialNumber,
+  finishedOrder,
 }) => {
   const [productMovimentation, setProductMovimentation] = useState([])
   const [productSelected, setProductSelected] = useState({
@@ -124,6 +125,7 @@ const Detail = ({
               <p style={{ marginBottom: '4px' }}>
                 Data de criação: {formattedDate(order.createdAt, 'DD/MM/YYYY')}
               </p>
+              {order.pendingReview && <Button onClick={finishedOrder}>Fechar Ordem</Button>}
             </Col>
           </Row>
         </Card>

@@ -25,10 +25,15 @@ const updateOrder =  (orderId, values) => {
   return axios.put(`${baseUrl}/orders/${orderId}`, values, { headers })
 }
 
+const finished = (orderId) => {
+  return axios.put(`${baseUrl}/orders-finished/${orderId}`, {}, { headers })
+}
+
 export {
   createOrder,
   getAllOrder,
   getAllOrderSummary,
   getOrderById,
   updateOrder,
+  finished,
 }

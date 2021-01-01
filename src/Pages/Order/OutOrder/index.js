@@ -6,6 +6,7 @@ import { getAll as getAllUserService } from '../../../Services/User'
 import { getAll as getAllProductService } from '../../../Services/Product'
 import { getAll as getAllCustomerService } from '../../../Services/Customer'
 import getAllStatusService from '../../../Services/Status'
+import { createOrder } from '../../../Services/Order'
 import { withRouter } from 'react-router-dom'
 
 const OutOrder = ({
@@ -64,14 +65,14 @@ const OutOrder = ({
     console.log('manager order')
   }
 
-  // const handleSubmit = async values => {
-  //   try {
-  //     await axios.post(`${baseUrl}/orders`, buildOrderSpec(values))
-  //     setKey(key + 1)
-  //   } catch (error) {
+  const handleSubmit = async values => {
+    try {
+      await createOrder(buildOrderSpec(values))
+      setKey(key + 1)
+    } catch (error) {
 
-  //   }
-  // }
+    }
+  }
 
   const goToOrder = () => history.push('/logged/order/manager')
 
@@ -83,7 +84,7 @@ const OutOrder = ({
       productList={productList}
       statusList={statusList}
       goToManagerOrder={goToManagerOrder}
-      handleSubmit={console.log}
+      handleSubmit={handleSubmit}
       goToOrder={goToOrder}
     />
   )

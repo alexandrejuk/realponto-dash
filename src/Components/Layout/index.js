@@ -10,11 +10,11 @@ import {
 
 const { Sider, Content } = Layout
 const menuItems = [
-  {
-    icon: <HomeOutlined />,
-    label: 'Resumo',
-    key: '/logged/dashboard',
-  },
+  // {
+  //   icon: <HomeOutlined />,
+  //   label: 'Resumo',
+  //   key: '/logged/dashboard',
+  // },
   {
     icon: <TeamOutlined />,
     label: 'Clientes',

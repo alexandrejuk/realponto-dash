@@ -10,6 +10,7 @@ import UpdateMyPassword from '../Pages/UpdateMyPassword'
 import MyTeam from '../Pages/MyTeam'
 import MyInfo from '../Pages/MyInfo'
 import PDV from '../Pages/PDV'
+import Plans from '../Pages/Plans'
 
 const RootRoutes = [{
   component: OrderAdd,
@@ -92,6 +93,13 @@ const RootRoutes = [{
   component: PDV,
   title: 'PONTO DE VENDA',
   path: '/logged/pdv',
+  exact: true,
+  goBack: true,
+},
+{
+  component: Plans,
+  title: 'PLANOS',
+  path: '/logged/plans',
   exact: true,
   goBack: true,
 }

@@ -2,7 +2,7 @@ import { set } from 'ramda'
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import DetailContainer from '../../../Containers/Order/Detail'
-import { getOrderById, updateOrder } from '../../../Services/Order'
+import { getOrderById, updateOrder, finished } from '../../../Services/Order'
 import { getAll } from '../../../Services/User'
 import getAllStatusService from '../../../Services/Status'
 
@@ -86,6 +86,16 @@ const Detail = ({
     // }
   }
 
+  const finishedOrder = async () => {
+    console.log('mano')
+    try {
+      const { data } = await finished(match.params.id)
+      setOrder(data)
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
   return (
     <DetailContainer
       order={order}
@@ -93,6 +103,7 @@ const Detail = ({
       statusList={statusList}
       updateOrderDetail={updateOrderDetail}
       addSerialNumber={addSerialNumber}
+      finishedOrder={finishedOrder}
     />
   )
 }
