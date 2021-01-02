@@ -5,7 +5,6 @@ const token = localStorage.getItem('token')
 const headers = { Authorization: `bearer ${token}` }
 
 const getAllOrder = (params = {}) => {
-  console.log('mmano')
   return axios.get(`${baseUrl}/orders`, { params, headers })
 }
 

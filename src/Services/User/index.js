@@ -5,7 +5,6 @@ const token = localStorage.getItem('token')
 const headers = { Authorization: `bearer ${token}` }
 
 const getAll = async (params = {}) => {
-  console.log('mmano', token)
   return await axios.get(`${baseUrl}/users`, { params, headers })
 }
 
