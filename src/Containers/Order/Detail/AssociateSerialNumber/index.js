@@ -1,8 +1,6 @@
 import React from 'react'
-import { Modal, Form, Input, Select, message } from 'antd'
+import { Modal, Form, Input, message } from 'antd'
 import { isEmpty } from 'ramda'
-
-const { Option } = Select
 
 const { TextArea } = Input
 const AssociateSerialNumber = ({
@@ -65,6 +63,7 @@ const AssociateSerialNumber = ({
               serialNumbers: values.serialNumbers.split(/\n/).filter(serialNumber => serialNumber),
             })
           })
+          .then(() => onCancel())
           .catch(info => {
             console.log('Validate Failed:', info)
           })

@@ -5,6 +5,7 @@ import { cpf, cnpj } from 'cpf-cnpj-validator'
 import AddEvent from './AddEvent'
 import AddSerialNumber from './AddSerialNumber'
 import AssociateSerialNumber from './AssociateSerialNumber'
+import AssociateCustomer from './AssociateCustomer'
 
 import moment from 'moment'
 const { Step } = Steps
@@ -77,6 +78,7 @@ const columns = (detail, handleSerialNumber, order, associateSerialNumber, seria
 const Detail = ({
   order,
   users,
+  customers,
   statusList,
   updateOrderDetail,
   addSerialNumbers,
@@ -84,6 +86,7 @@ const Detail = ({
   finishedOrder,
   serialNumberExistOrActivated,
   serialNumbersOuts,
+  associateCustomerOrder,
 }) => {
   const [productMovimentation, setProductMovimentation] = useState([])
   const [productSelected, setProductSelected] = useState({
@@ -92,6 +95,7 @@ const Detail = ({
     }
   })
   const [event, setEvent] = useState(false)
+  const [customerModal, setCustomerModal] = useState(false)
 
   const [productSerialSelected, setProductSerialSelected] = useState({})
   const [serial, setSerial] = useState(false)
@@ -118,6 +122,14 @@ const Detail = ({
 
   const selectedProductFunction = () => {
     setEvent(true)
+  }
+
+  const customerModalOpen = () => {
+    setCustomerModal(true)
+  }
+
+  const customerModalClose = () => {
+    setCustomerModal(false)
   }
 
   const closeModalEvent = () => {
@@ -214,8 +226,13 @@ const Detail = ({
           <Col span={24}>
             <Card bordered={false}>
               <Row gutter={[8, 8]}>
-                <Col span={24}>
+                <Col span={16}>
                   <p>Detalhes do cliente</p>
+                </Col>
+                <Col span={8} style={{ textAlign: 'right' }}>
+                  {!order.customer && !order.customer.name && (
+                    <Button onClick={customerModalOpen}>Associar cliente</Button>
+                  )}
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Nome do cliente</p>
@@ -333,6 +350,13 @@ const Detail = ({
         productSelected={productSerialAssociateSelected}
         serialNumbers={serialNumbersOuts}
         onCreate={addAssociateSerialNumbers}
+      />
+
+      <AssociateCustomer
+        visible={customerModal}
+        onCancel={customerModalClose}
+        customers={customers}
+        onCreate={associateCustomerOrder}
       />
     </Row>
 

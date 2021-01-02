@@ -77,6 +77,7 @@ const AddSerialNumber = ({
               serialNumbers: values.serialNumbers.split(/\n/).filter(serialNumber => serialNumber),
             })
           })
+          .then(() => onCancel())
           .catch(info => {
             console.log('Validate Failed:', info)
           })

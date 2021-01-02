@@ -28,6 +28,10 @@ const finished = (orderId) => {
   return axios.put(`${baseUrl}/orders-finished/${orderId}`, {}, { headers })
 }
 
+const customerAssocite = (orderId, values) => {
+  return axios.put(`${baseUrl}/customer-associate/${orderId}`, values, { headers })
+}
+
 export {
   createOrder,
   getAllOrder,
@@ -35,4 +39,5 @@ export {
   getOrderById,
   updateOrder,
   finished,
+  customerAssocite,
 }

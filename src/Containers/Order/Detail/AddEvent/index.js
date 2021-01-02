@@ -72,6 +72,7 @@ const AddEvent = ({
               orderProductId: productSelected.id,
             })
           })
+          .then(() => onCancel())
           .catch(info => {
             console.log('Validate Failed:', info)
           })
