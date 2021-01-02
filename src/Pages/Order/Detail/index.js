@@ -83,6 +83,10 @@ const Detail = ({
     try {
       const { data } = await getOrderById(match.params.id)
       setOrder(data)
+      if (order.status.type === 'outputs') {
+        const { data } = await getSerialOrderOutputs({ transactionOutId: match.params.id, limit: 9999 })
+        setSerialNumbersOuts(data)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -104,7 +108,6 @@ const Detail = ({
   }
 
   const finishedOrder = async () => {
-    console.log('mano')
     try {
       const { data } = await finished(match.params.id)
       setOrder(data)
@@ -121,17 +124,11 @@ const Detail = ({
   const addAssociateSerialNumbers = async (values) => {
     await associateSerialNumber({ ...values, orderId: match.params.id })
     getOrder()
-    const { data } = await getSerialOrderOutputs({ transactionOutId: match.params.id, limit: 9999 })
-    setSerialNumbersOuts(data)
   }
 
   const associateCustomerOrder = async (values) => {
     await customerAssocite(match.params.id, values)
     getOrder()
-    if (order.status.type === 'outputs') {
-      const { data } = await getSerialOrderOutputs({ transactionOutId: match.params.id, limit: 9999 })
-      setSerialNumbersOuts(data)
-    }
   }
 
   return (

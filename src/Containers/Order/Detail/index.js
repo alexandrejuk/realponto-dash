@@ -201,16 +201,13 @@ const Detail = ({
                         .map(serialNumber =>(
                           <Row gutter={[8, 8]} key={serialNumber.serialNumber}>
                             <Col span={8}>
-                              Número Serial <br />
-                              <b>{serialNumber.serialNumber}</b>
+                              Número Serial: <b>{serialNumber.serialNumber}</b>
                             </Col>
                             <Col span={8}>
-                              Revisado por<br />
-                              <b>{serialNumber.user.name}</b>
+                              Revisado por: <b>{serialNumber.user.name}</b>
                             </Col>
                             <Col span={8}>
-                              Data da Revisão <br />
-                              <b>{moment(serialNumber.createdAt).format('DD/MM/YY - HH:mm')}</b>
+                              Data da Revisão: <b>{moment(serialNumber.createdAt).format('DD/MM/YY - HH:mm')}</b>
                             </Col>
                           </Row>
                         ))
@@ -229,7 +226,7 @@ const Detail = ({
                   <p>Detalhes do cliente</p>
                 </Col>
                 <Col span={8} style={{ textAlign: 'right' }}>
-                  {!order.customer && !order.customer.name && (
+                  {!order.customer && order.pendingReview && (
                     <Button onClick={customerModalOpen}>Associar cliente</Button>
                   )}
                 </Col>

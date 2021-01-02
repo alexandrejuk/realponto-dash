@@ -27,6 +27,13 @@ const columns = chooseProduct => ([
     fixed: 'left',
   },
   {
+    title: 'Quantidade estoque',
+    dataIndex: 'record.balances[0].quantity',
+    key: 'balance',
+    fixed: 'left',
+    render: (_, record) => record.balances[0].quantity,
+  },
+  {
     title: '',
     dataIndex: 'operation',
     key: 'id',

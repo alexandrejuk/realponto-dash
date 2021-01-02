@@ -53,8 +53,8 @@ const ProductStep = ({
   productList,
   form,
 }) => {
-  const OptionComponent = ({ id, name }) => (
-    <Option key={id} value={id}>{name}</Option>
+  const OptionComponent = ({ id, name, balances }) => (
+    <Option key={id} value={id}>{name} - quantidade: {balances[0].quantity}</Option>
   )
 
   return (
