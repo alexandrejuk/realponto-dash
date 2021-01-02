@@ -4,11 +4,13 @@ import formattedDate from '../../../utils/parserDate'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
 import AddEvent from './AddEvent'
 import AddSerialNumber from './AddSerialNumber'
+import AssociateSerialNumber from './AssociateSerialNumber'
 
+import moment from 'moment'
 const { Step } = Steps
 const { Title } = Typography
 
-const columns = (detail, handleSerialNumber) => (
+const columns = (detail, handleSerialNumber, order, associateSerialNumber, serialOrderOuts) => (
   [
     {
       title: 'Status',
@@ -29,7 +31,15 @@ const columns = (detail, handleSerialNumber) => (
       title: '',
       dataIndex: 'productId',
       key: 'action',
-      render: (text, record) => (
+      render: (productId, record) => {
+        let serialNumbersAdded = order.serialNumbers.filter(product => product.product.id === productId)
+        if (order.status.type === 'outputs') {
+          serialNumbersAdded = serialOrderOuts.filter(product => product.product.id === productId)
+        }
+
+        const quantityMax = record.quantity - (serialNumbersAdded && serialNumbersAdded.length) || 0
+
+        return (
        <>
          <Button
           onClick={() => detail(record)}
@@ -37,22 +47,29 @@ const columns = (detail, handleSerialNumber) => (
         >
           Detalhes
         </Button>
-        {/* abrir uma modal para escolher o que quer fazer adicionar numeros serial, ou algum tipo de said
-          para produtos com status diferentes de aguardando analise nao podemos lançar saida só podemos lançar
-          os numeros de series na moda de numero de serie temos que colocar o nome do tecnico que revisou
-          nas ordens de saida podemos buscar os numeros de series que serao usados
-          para status com analise pendente temos que colocar o fluxo no front para aceitar in_analysis, depois que tiver o retorno
-          de return_anaylisis podemos adicionar o numero de seria no campo de coloca in_analysis temos que ter a quantidade para saber quantos estao sendo analisado
-          para ordem do tipo de saida só podemos adidionar o
-        // */}
-        <Button
-          onClick={() => handleSerialNumber(record)}
-          type="outline"
-        >
-          Adicionar Número Série
-        </Button>
+        {
+          quantityMax !== 0 && order.status.type === 'inputs' && (
+          <Button
+            onClick={() => handleSerialNumber(record)}
+            type="outline"
+          >
+            Adicionar Número Série
+          </Button>
+          )
+        }
+        {
+          quantityMax !== 0 && order.status.type === 'outputs' && (
+          <Button
+            onClick={() => associateSerialNumber(record)}
+            type="outline"
+          >
+            Associar Número Série
+          </Button>
+          )
+        }
        </>
-      ),
+      )
+    },
     },
   ]
 )
@@ -62,8 +79,11 @@ const Detail = ({
   users,
   statusList,
   updateOrderDetail,
-  addSerialNumber,
+  addSerialNumbers,
+  addAssociateSerialNumbers,
   finishedOrder,
+  serialNumberExistOrActivated,
+  serialNumbersOuts,
 }) => {
   const [productMovimentation, setProductMovimentation] = useState([])
   const [productSelected, setProductSelected] = useState({
@@ -71,10 +91,14 @@ const Detail = ({
       label: null
     }
   })
+  const [event, setEvent] = useState(false)
 
   const [productSerialSelected, setProductSerialSelected] = useState({})
-  const [event, setEvent] = useState(false)
   const [serial, setSerial] = useState(false)
+
+  const [productSerialAssociateSelected, setProductSerialAssociateSelected] = useState({})
+  const [associateSerial, setAssociateSerial] = useState(false)
+
 
   const handleProductMovimentation = (productSelectedTable) => {
     const movimentation = order.transactions.filter(product => product.productId === productSelectedTable.productId)
@@ -87,12 +111,22 @@ const Detail = ({
     setSerial(true)
   }
 
+  const associateSerialNumber = (productSelectedTable) => {
+    setProductSerialAssociateSelected(productSelectedTable)
+    setAssociateSerial(true)
+  }
+
   const selectedProductFunction = () => {
     setEvent(true)
   }
 
   const closeModalEvent = () => {
     setEvent(false)
+  }
+
+  const closeModalAssociateSerialNumber = () => {
+   setProductSerialAssociateSelected({})
+    setAssociateSerial(false)
   }
 
   const closeModalSerial = () => {
@@ -141,8 +175,36 @@ const Detail = ({
                 </Col>
                 <Col span={24}>
                   <Table
-                    columns={columns(handleProductMovimentation, handleSerialNumber)}
+                    columns={columns(handleProductMovimentation, handleSerialNumber, order, associateSerialNumber, serialNumbersOuts)}
                     dataSource={order.orderProducts}
+                    expandable={{
+                      expandedRowRender: record => {
+                        let items = order.serialNumbers
+                        if (order.status.type === 'outputs') {
+                          items = serialNumbersOuts
+                        }
+
+                        return items
+                        .filter(serialNumber => serialNumber.product.id === record.productId)
+                        .map(serialNumber =>(
+                          <Row gutter={[8, 8]} key={serialNumber.serialNumber}>
+                            <Col span={8}>
+                              Número Serial <br />
+                              <b>{serialNumber.serialNumber}</b>
+                            </Col>
+                            <Col span={8}>
+                              Revisado por<br />
+                              <b>{serialNumber.user.name}</b>
+                            </Col>
+                            <Col span={8}>
+                              Data da Revisão <br />
+                              <b>{moment(serialNumber.createdAt).format('DD/MM/YY - HH:mm')}</b>
+                            </Col>
+                          </Row>
+                        ))
+                      }
+                      // rowExpandable: record => record.name !== 'Not Expandable',
+                    }}
                   />
                 </Col>
 
@@ -261,8 +323,16 @@ const Detail = ({
         users={users}
         productSelected={productSerialSelected}
         onCancel={closeModalSerial}
-        onCreate={addSerialNumber}
+        onCreate={addSerialNumbers}
         serialNumbers={order.serialNumbers}
+        serialNumberExistOrActivated={serialNumberExistOrActivated}
+      />
+      <AssociateSerialNumber
+        visible={associateSerial}
+        onCancel={closeModalAssociateSerialNumber}
+        productSelected={productSerialAssociateSelected}
+        serialNumbers={serialNumbersOuts}
+        onCreate={addAssociateSerialNumbers}
       />
     </Row>
 

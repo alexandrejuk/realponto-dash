@@ -31,13 +31,6 @@ const columns = handleRemoveItem => ([
     fixed: 'left',
   },
   {
-    title: 'Análise?',
-    dataIndex: 'analysis',
-    key: 'analysis',
-    fixed: 'left',
-    render: (value) => <>{value ? 'Sim' : 'Não'}</>,
-  },
-  {
     title: '',
     key: 'operation',
     fixed: 'right',

@@ -20,8 +20,6 @@ const Manager = ({
     const today = moment(new Date())
 
     const query = {
-      initialDate: today.toString(),
-      finalyDate: today.toString(),
       page,
       limit: 25
     }
@@ -41,10 +39,14 @@ const Manager = ({
        : {}
     )
 
+    const datesSpec = dates[0] && dates[1] ? {
+      initialDate: dates[0].toString(),
+      finalyDate: dates[1].toString(),
+    } : {}
+
     const buildQuerySpec = {
       user_name,
-      initialDate: dates && dates[0].toString(),
-      finalyDate: dates && dates[1].toString(),
+      ...datesSpec,
       ...checkedPendingReview ,
       page,
       limit: 25

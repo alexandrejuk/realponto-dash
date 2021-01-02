@@ -5,19 +5,18 @@ import { isEmpty } from 'ramda'
 const { Option } = Select
 
 const { TextArea } = Input
-const AddSerialNumber = ({
+const AssociateSerialNumber = ({
   visible,
   onCreate,
   onCancel,
-  users,
   serialNumbers,
   productSelected,
-  serialNumberExistOrActivated,
 }) => {
   const [form] = Form.useForm()
   const serialNumbersAdded = serialNumbers && serialNumbers.filter(product => product.product.id === productSelected.productId)
   const quantityMax = productSelected.quantity - (serialNumbersAdded && serialNumbersAdded.length) || 0
-  const changeTextArea = async ({ target }) => {
+
+  const changeTextArea = ({ target }) => {
     const { value } = target
     const currentTargetValue = value
     const currentValueSerialNumber = currentTargetValue.split(/\n/).filter(serialNumber => serialNumber)
@@ -33,19 +32,9 @@ const AddSerialNumber = ({
       })
     }
 
-    const { data } = (
-      isEmpty(currentValueSerialNumber[lastPosition])
-      && (await serialNumberExistOrActivated(currentValueSerialNumber[lastPosition]))
-    )
-
     if (findSerialNumber && findSerialNumber.length > 1) {
       setSerialNumberModal(currentValueSerialNumber, lastPosition)
       return message.error('Número de série já foi adicionado!')
-    }
-
-    if (data && data.length > 0) {
-      setSerialNumberModal(currentValueSerialNumber, lastPosition)
-      return message.error('Número de série já registrado')
     }
 
     if (currentValueSerialNumber.length > quantityMax || quantityMax === 0) {
@@ -59,8 +48,8 @@ const AddSerialNumber = ({
     <Modal
       width={350}
       visible={visible}
-      title="ADICIONAR NÚMERO SÉRIE"
-      okText="Adicionar Número Série"
+      title="ASSOCIAR NÚMERO SÉRIE"
+      okText="Associar Número Série"
       cancelText="Cancelar"
       onCancel={() => {
         onCancel()
@@ -72,7 +61,6 @@ const AddSerialNumber = ({
           .then(values => {
             form.resetFields()
             onCreate({
-              ...values,
               productId: productSelected.productId,
               serialNumbers: values.serialNumbers.split(/\n/).filter(serialNumber => serialNumber),
             })
@@ -87,24 +75,6 @@ const AddSerialNumber = ({
         layout="vertical"
         name="form_in_modal"
       >
-        <Form.Item
-          name="userId"
-          label="Selecione o usuário"
-          hasFeedback
-          style={{ marginBottom: '4px' }}
-          required
-          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
-        >
-          <Select
-            placeholder="Selecione o usuário"
-            notFoundContent="Nenhum usuário encontrado!"
-          >
-            {users && users.map(({ name, id }) => (
-              <Option key={id} value={id}>{name}</Option>
-            ))}
-          </Select>
-        </Form.Item>
-
         <Form.Item
           name="serialNumbers"
           label="Número Sérial"
@@ -121,4 +91,4 @@ const AddSerialNumber = ({
   )
 }
 
-export default AddSerialNumber
+export default AssociateSerialNumber

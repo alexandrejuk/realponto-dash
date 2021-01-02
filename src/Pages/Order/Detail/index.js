@@ -1,10 +1,15 @@
-import { set } from 'ramda'
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import DetailContainer from '../../../Containers/Order/Detail'
 import { getOrderById, updateOrder, finished } from '../../../Services/Order'
 import { getAll } from '../../../Services/User'
 import getAllStatusService from '../../../Services/Status'
+import {
+  getBySerialNumber,
+  createSerialNumbers,
+  associateSerialNumber,
+  getSerialOrderOutputs,
+} from '../../../Services/SerialNumber'
 
 const Detail = ({
   match
@@ -33,6 +38,7 @@ const Detail = ({
   })
   const [users, setUsers] = useState([])
   const [statusList, setStatusList] = useState([])
+  const [serialNumbersOuts, setSerialNumbersOuts] = useState([])
 
   useEffect(() => {
     getOrder()
@@ -76,14 +82,10 @@ const Detail = ({
     }
   }
 
-  const addSerialNumber = async (values) => {
-    console.log(values)
-    // try {
-    //   const { data } = await updateOrder(match.params.id, values)
-    //   setOrder(data)
-    // } catch (error) {
-    //   console.log(error)
-    // }
+
+  const serialNumberExistOrActivated = async (serialNumber) => {
+    const response = await getBySerialNumber({ activated: true, serialNumber })
+    return response
   }
 
   const finishedOrder = async () => {
@@ -96,14 +98,29 @@ const Detail = ({
     }
   }
 
+  const addSerialNumbers = async (values) => {
+    const response = await createSerialNumbers({ ...values, orderId: match.params.id })
+    getOrder()
+    return response
+  }
+  const addAssociateSerialNumbers = async (values) => {
+    await associateSerialNumber({ ...values, orderId: match.params.id })
+    getOrder()
+    const { data } = await getSerialOrderOutputs({ transactionOutId: match.params.id, limit: 9999 })
+    setSerialNumbersOuts(data)
+  }
+
   return (
     <DetailContainer
       order={order}
       users={users}
       statusList={statusList}
       updateOrderDetail={updateOrderDetail}
-      addSerialNumber={addSerialNumber}
       finishedOrder={finishedOrder}
+      serialNumberExistOrActivated={serialNumberExistOrActivated}
+      addSerialNumbers={addSerialNumbers}
+      addAssociateSerialNumbers={addAssociateSerialNumbers}
+      serialNumbersOuts={serialNumbersOuts}
     />
   )
 }

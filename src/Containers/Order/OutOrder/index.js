@@ -59,7 +59,6 @@ const Add = ({
 
   const next = () => {
     const errors = validatorStep(formData, current)
-
     if (errors && errors.products) {
       message.error('É necessário adicionar pelo menos um produto!')
     }

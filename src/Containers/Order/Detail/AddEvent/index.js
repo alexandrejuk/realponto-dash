@@ -38,8 +38,6 @@ const AddEvent = ({
       return curr
     }, {})
 
-
-
     if (countTotalStatus && productSelected.status.label === 'pending_analysis') {
       statusForm = statusList.filter(status => status.label === 'in_analysis' || status.label === 'analysis_return')
     }
@@ -91,6 +89,7 @@ const AddEvent = ({
           hasFeedback
           style={{ marginBottom: '4px' }}
           required
+          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
         >
           <Select
             placeholder="Selecione evento da ordem"
@@ -109,6 +108,7 @@ const AddEvent = ({
           hasFeedback
           style={{ marginBottom: '4px' }}
           required
+          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
         >
           <Select
             placeholder="Selecione o usuário"

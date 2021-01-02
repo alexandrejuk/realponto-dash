@@ -6,7 +6,7 @@ const orderInfoValidators = {
 }
 
 const transactionValidators = {
-  status: true,
+  statusId: true,
 }
 
 const productValidators = {

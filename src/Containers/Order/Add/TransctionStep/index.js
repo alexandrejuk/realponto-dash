@@ -25,7 +25,7 @@ const TransactionStep = ({
           <Form.Item
             name="statusId"
             label="Tipo da ordem"
-            validateStatus={formErrors && formErrors.status ? 'error' : ''}
+            validateStatus={formErrors && formErrors.statusId ? 'error' : ''}
             hasFeedback
             style={{ marginBottom: '4px' }}
           >
@@ -39,7 +39,7 @@ const TransactionStep = ({
               ))}
             </Select>
           </Form.Item>
-          <Text type="danger">{formErrors && formErrors.status}</Text>
+          <Text type="danger">{formErrors && formErrors.statusId}</Text>
         </div>
       </Form>
     </>

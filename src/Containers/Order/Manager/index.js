@@ -35,7 +35,7 @@ const options = [
 const { Title } = Typography
 const today = moment(new Date(), dateFormat)
 const initialFilterState = {
-  dates: [today, today],
+  dates: [null, null],
   pendingReview: ['Sim', 'Não'],
   user_name: '',
 }
