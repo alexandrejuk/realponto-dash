@@ -10,10 +10,12 @@ import {
 import { DownOutlined } from '@ant-design/icons'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { LeftOutlined } from '@ant-design/icons'
+import AdBanner from '../../Components/AdBanner'
 
 const Header = ({
   rootRoutes,
   history,
+  location
 }) => {
 
   const handleNavegator = ({ key }) => {
@@ -73,6 +75,9 @@ const Header = ({
         </Button>
       </Dropdown>
       </Col>
+      <Col span={24}>
+        {location.pathname.replace('/logged/', '') !== 'plans' && <AdBanner />}
+      </Col>
     </Row>
   )
 
@@ -89,6 +94,7 @@ const Header = ({
       <Switch>
         {rootRoutes.map(renderRoute)}
       </Switch>
+
     </PageHeader>
   )
 }

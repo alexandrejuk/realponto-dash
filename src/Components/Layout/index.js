@@ -37,6 +37,7 @@ const menuItems = [
 const LayoutComponent = ({
   children,
   history,
+  location,
 }) => {
   const goTo = ({ key }) => history.push(key)
 
@@ -64,7 +65,8 @@ const LayoutComponent = ({
             </Menu.Item>
           ))}
         </Menu>
-        <AdSide />
+        {location.pathname.replace('/logged/', '') !== 'plans' && <AdSide />}
+
       </Sider>
       <Layout >
         <Content
