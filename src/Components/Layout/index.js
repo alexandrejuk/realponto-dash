@@ -66,7 +66,6 @@ const LayoutComponent = ({
           ))}
         </Menu>
         {location.pathname.replace('/logged/', '') !== 'plans' && <AdSide />}
-
       </Sider>
       <Layout >
         <Content

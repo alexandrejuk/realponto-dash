@@ -1,7 +1,7 @@
 const PAGARME_ENCRYPTION_KEY = (
   process && process.env.REACT_APP_PAGARME_ENVIRONMENT === 'live'
     ? process.env.REACT_APP_PAGARME_ENCRYPTION_KEY_PRD
-    : process.env.REACT_APP_PAGARME_ENCRYPTION_KEY_STG
+    : 'ek_test_8Tevcd9yfp9BORb0l5WhVdnK3OTCOL'
 )
 
 const PAGARME_POSTBACK_URL = (

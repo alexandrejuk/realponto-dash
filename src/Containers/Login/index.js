@@ -20,9 +20,10 @@ const Login = ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden'
       }}>
         <Image
-          width={430}
+          width='100%'
           height="auto"
           src={MeetsImage}
         />
