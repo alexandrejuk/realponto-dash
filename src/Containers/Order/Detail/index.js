@@ -215,7 +215,6 @@ const Detail = ({
                           </Row>
                         ))
                       }
-                      // rowExpandable: record => record.name !== 'Not Expandable',
                     }}
                   />
                 </Col>
