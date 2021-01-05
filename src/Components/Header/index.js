@@ -24,6 +24,9 @@ const Header = ({
   unSetStatus,
   user,
   company,
+  cleanCustomer,
+  cleanOrder,
+  cleanProduct,
 }) => {
 
   const handleNavegator = ({ key }) => {
@@ -33,6 +36,9 @@ const Header = ({
       loggoutUser()
       unSetCompany()
       unSetStatus()
+      cleanCustomer()
+      cleanOrder()
+      cleanProduct()
       history.push('/login')
     }
 
@@ -123,6 +129,9 @@ const mapDispatchToProps = dispatch => ({
   loggoutUser: () => dispatch({ type: 'USER_LOGOUT' }),
   unSetCompany: () => dispatch({ type: 'UNSET_COMPANY' }),
   unSetStatus: () => dispatch({ type: 'UNSET_STATUS' }),
+  cleanCustomer: () => dispatch({ type: 'CLEAN_CUSTOMER_GLOBAL_SEARCH' }),
+  cleanOrder: () => dispatch({ type: 'CLEAN_ORDER_GLOBAL_SEARCH' }),
+  cleanProduct: () => dispatch({ type: 'CLEAN_PRODUCT_GLOBAL_SEARCH' }),
 })
 
 const enhanced = compose(
