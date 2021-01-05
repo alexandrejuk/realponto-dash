@@ -1,13 +1,10 @@
-import moment from 'moment'
 import {
   SET_ORDER_GLOBAL_SEARCH,
   CLEAN_ORDER_GLOBAL_SEARCH,
 } from '../actions/orderSearch'
 
-const dateFormat = 'DD/MM/YYYY'
-const today = moment(new Date(), 'yyyy')
 const initialState = {
-  dates: [today, today],
+  dates: [null, null],
   pendingReview: ['Sim', 'Não'],
   user_name: '',
 }

@@ -32,11 +32,6 @@ const options = [
   { label: <BarChartOutlined />, value: 'chart' },
 ];
 const { Title } = Typography
-const initialFilterState = {
-  dates: [null, null],
-  pendingReview: ['Sim', 'Não'],
-  user_name: '',
-}
 
 const Manager = ({
   datasource,
@@ -47,40 +42,14 @@ const Manager = ({
   handlePagination,
   chartSettings,
   datasourceChart,
+  filters,
+  handleOnChange,
+  clearFilters,
 }) => {
   const [radioValue, setRadioValue] = useState('table')
-  const [filters, setFilters] = useState(initialFilterState)
   const radioOnChange = ({ target }) => (
     setRadioValue(target.value)
   )
-
-  const onChange = ({ target }) => {
-    const { name, value } = target
-    if(name === 'pendingReview') {
-      return setFilters({
-        ...filters,
-        [name]: (
-          value.length === 0
-          ? initialFilterState.pendingReview
-          : value
-        )
-      })
-    }
-
-    return setFilters({
-      ...filters,
-      [name]: value
-    })
-  }
-
-  const clearFilters = async () => {
-    setFilters(initialFilterState)
-    await handleGetOrdersByFilters(initialFilterState)
-  }
-
-  const handleFilter = async () => {
-    await handleGetOrdersByFilters(filters)
-  }
 
   return (
     <Row gutter={[8, 8]}>
@@ -92,16 +61,16 @@ const Manager = ({
                 value={filters.dates}
                 format={dateFormat}
                 placeholder=""
-                onChange={value => onChange({ target: { name: 'dates', value }})}
+                onChange={value => handleOnChange({ target: { name: 'dates', value }})}
               />
             </Col>
             <Col span={12}>
               <Input
                 placeholder="Filtre por nome."
                 prefix={<SearchOutlined />}
-                onChange={onChange}
+                onChange={handleOnChange}
                 name="user_name"
-                value={filters.globalSearch}
+                value={filters.user_name}
               />
             </Col>
             <Col span={4} style={{ paddingTop: '7px', textAlign: 'center' }}>
@@ -109,7 +78,7 @@ const Manager = ({
               <CheckboxGroup
                 options={plainOptions}
                 value={filters.pendingReview}
-                onChange={value => onChange({ target: { name: 'pendingReview', value }})}
+                onChange={value => handleOnChange({ target: { name: 'pendingReview', value }})}
               />
             </Col>
             <Col span={4} style={{ textAlign: 'right' }}>
@@ -119,7 +88,7 @@ const Manager = ({
               >
                 Limpar Filtros
               </Button>
-              <Button type="primary" onClick={handleFilter}>Filtrar</Button>
+              <Button type="primary" onClick={handleGetOrdersByFilters}>Filtrar</Button>
             </Col>
           </Row>
         </Card>

@@ -95,7 +95,6 @@ const Manager = ({
     cleanProductSearch()
   }
 
-
   return (
     <ManagerContainer
       products={products}
