@@ -34,7 +34,7 @@ const Login = ({
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-        <Title leve={5} style={{ fontSize: '22px', marginBottom: '4px' }}>Nova Dashboard RPS!</Title>
+        <Title leve={5} style={{ fontSize: '22px', marginBottom: '4px' }}>Nova Dashboard RP!</Title>
         <p style={{ textAlign: 'center',  marginBottom: '14px' }}>A nova dashboard chegou para facilitar ainda mais a sua vida, <br /> com ela você visualiza métricas da sua operação <br />e muito mais.</p>
         <Form
           style={{
