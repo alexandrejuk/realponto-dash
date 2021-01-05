@@ -1,7 +1,9 @@
 import React from 'react'
-import { Button, Card, Input, Row, Col } from 'antd'
+import { Button, Card, Input, Row, Col, Typography } from 'antd'
 import CustomerList from './CustomerList'
-import { SearchOutlined } from '@ant-design/icons'
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
+
+const { Title } = Typography
 
 const Manager = ({
   source,
@@ -10,7 +12,26 @@ const Manager = ({
   handleFilter,
   clearFilters,
 }) => (
-  <Row gutter={[8, 8]}>
+  <Row gutter={[8, 16]}>
+    <Col span={24}>
+      <Card bordered={false}>
+        <Row>
+          <Col span={12}>
+            <Title style={{ marginBottom: 0 }} level={4}>Adicione novos clientes</Title>
+            <p style={{ marginBottom: 0 }}>Crie e gerencie os seus clientes</p>
+          </Col>
+          <Col span={12} style={{ textAlign: 'right' }}>
+            <Button
+              onClick={console.log}
+              style={{ marginRight: '16px'}}
+              icon={<PlusOutlined />}
+            >
+              Adicionar Cliente
+            </Button>
+          </Col>
+        </Row>
+      </Card>
+    </Col>
     <Col span={24}>
     <Card bordered={false}>
       <Row gutter={[8, 8]}>

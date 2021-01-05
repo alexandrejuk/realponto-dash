@@ -56,7 +56,7 @@ const MyInfo = ({
                   label="Identidade"
                   rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
                 >
-                  <Input onChange={handleDocument} maxLength={9}/>
+                  <Input onChange={handleDocument} maxLength={9} />
                 </Form.Item>
               </Col>
               <Col span={8}>

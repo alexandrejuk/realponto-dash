@@ -52,7 +52,34 @@ const Manager = ({
   )
 
   return (
-    <Row gutter={[8, 8]}>
+    <Row gutter={[8, 16]}>
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row>
+            <Col span={12}>
+              <Title style={{ marginBottom: 0 }} level={4}>Crie novas ordens</Title>
+              <p style={{ marginBottom: 0 }}>Crie e gerencie as ordens de entrada e saída</p>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right' }}>
+              <Button
+                onClick={goToAddOrderOut}
+                style={{ marginRight: '16px'}}
+                icon={<PlusOutlined />}
+                danger
+              >
+                Adicionar Saída
+              </Button>
+              <Button
+                onClick={goToAddOrder}
+                style={{ marginRight: '16px'}}
+                icon={<PlusOutlined />}
+              >
+                Adicionar Entrada
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
@@ -105,21 +132,6 @@ const Manager = ({
               </Title>
             </Col>
             <Col span={16} style={{ textAlign: 'right' }}>
-              <Button
-                onClick={goToAddOrderOut}
-                style={{ marginRight: '16px'}}
-                icon={<PlusOutlined />}
-                danger
-              >
-                Adicionar Saída
-              </Button>
-              <Button
-                onClick={goToAddOrder}
-                style={{ marginRight: '16px'}}
-                icon={<PlusOutlined />}
-              >
-                Adicionar Entrada
-              </Button>
               <Radio.Group
                 options={options}
                 optionType="button"

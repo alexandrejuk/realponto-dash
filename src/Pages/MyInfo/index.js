@@ -7,10 +7,15 @@ import MyInfoContainer from '../../Containers/MyInfo'
 
 const MyInfo = ({
   user,
+  loggedUser,
 }) => {
   const updateMyInfo = async (values) => {
     try {
-      await updateMyInfoService(user.id, values)
+      const { data } = await updateMyInfoService(user.id, values)
+      loggedUser({
+        ...user,
+        ...data,
+      })
     } catch (error) {
       console.log(error)
     }
@@ -28,9 +33,12 @@ const mapStateToProps = ({ user }) => ({
   user,
 })
 
+const mapDispatchToProps = dispatch => ({
+  loggedUser: payload => dispatch({ type: 'USER_LOGGED', payload }),
+})
+
 const enhanced = compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
 )
 
 export default enhanced(MyInfo)
-
