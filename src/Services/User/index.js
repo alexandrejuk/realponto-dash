@@ -16,9 +16,14 @@ const updateUserPassword = async (values) => {
   return await axiosIntance.put(`/users-update-password`, values)
 }
 
+const updateMyInfo = async (userId, values) => {
+  return await axiosIntance.put(`/users/${userId}`, values)
+}
+
 export {
   getAll,
   createUser,
   updateUser,
   updateUserPassword,
+  updateMyInfo,
 }
