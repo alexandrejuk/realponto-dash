@@ -9,21 +9,19 @@ const CheckboxGroup = Checkbox.Group;
 
 const { Title } = Typography
 const plainOptions = ['Ativo', 'Inativo']
-const initialFilterState = {
-  activated: ['Ativo', 'Inativo'],
-  name: '',
-}
 
 const Manager = ({
   handleSubmitUpdate,
   handleSubmit,
   products,
+  clearFilters,
+  handleOnChange,
+  filters,
   handleGetProductsByFilters,
 }) => {
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [productSelected, setProductSelected] = useState({})
-  const [filters, setFilters] = useState(initialFilterState)
 
   const onSubmitUpdate = values => {
     handleSubmitUpdate({...values, id: productSelected.id })
@@ -44,35 +42,6 @@ const Manager = ({
   const handleCloseModalEdit = () => {
     setVisibleEdit(false)
     setProductSelected({})
-  }
-
-  const onChange = ({ target }) => {
-    const { name, value } = target
-    if(name === 'activated') {
-      console.log('name', name, value)
-      return setFilters({
-        ...filters,
-        [name]: (
-          value.length === 0
-          ? initialFilterState.activated
-          : value
-        )
-      })
-    }
-
-    return setFilters({
-      ...filters,
-      [name]: value
-    })
-  }
-
-  const handleFilters = async () => {
-    await handleGetProductsByFilters(filters)
-  }
-
-  const clearFilters = async () => {
-    setFilters(initialFilterState)
-    await handleGetProductsByFilters({})
   }
 
   return (
@@ -118,14 +87,14 @@ const Manager = ({
                 prefix={<SearchOutlined />}
                 name='name'
                 value={filters.name}
-                onChange={onChange}
+                onChange={handleOnChange}
               />
             </Col>
             <Col span={4} style={{ paddingTop: '5px' }}>
               <CheckboxGroup
                 options={plainOptions}
                 value={filters.activated}
-                onChange={value => onChange({ target: { name: 'activated', value }})}
+                onChange={value => handleOnChange({ target: { name: 'activated', value }})}
               />
             </Col>
 
@@ -138,7 +107,7 @@ const Manager = ({
               </Button>
               <Button
                 type="primary"
-                onClick={handleFilters}
+                onClick={handleGetProductsByFilters}
               >
                 Filtrar
               </Button>

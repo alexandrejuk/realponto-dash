@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose, pathOr } from 'ramda'
 
 import buildOrderSpec from './orderSpec'
 import AddContainer from '../../../Containers/Order/Add'
@@ -6,22 +9,19 @@ import { getAll as getAllUserService } from '../../../Services/User'
 import { getAll as getAllProductService } from '../../../Services/Product'
 import { getAll as getAllCustomerService } from '../../../Services/Customer'
 import { createOrder } from '../../../Services/Order'
-import getAllStatusService from '../../../Services/Status'
-import { withRouter } from 'react-router-dom'
 
 const Add = ({
   history,
+  status,
 }) => {
   const [userList, setUserList] = useState([])
   const [customerList, setCustomerList] = useState([])
   const [productList, setProductList] = useState([])
   const [key, setKey] = useState(0)
-  const [statusList, setStatusList] = useState([])
   useEffect(() => {
     getAllUser()
     getAllCustomer()
     getAllProduct()
-    getllStatus()
   }, [])
 
 
@@ -52,15 +52,6 @@ const Add = ({
     }
   }
 
-  const getllStatus = async () => {
-    try {
-      const { data: { source }} = await getAllStatusService({ type: 'inputs' })
-      setStatusList(source)
-    } catch (error) {
-
-    }
-  }
-
   const goToManagerOrder = () => {
     console.log('manager order')
   }
@@ -82,7 +73,7 @@ const Add = ({
       customerList={customerList}
       userList={userList}
       productList={productList}
-      statusList={statusList}
+      statusList={status.filter(s => s.type === 'inputs')}
       goToManagerOrder={goToManagerOrder}
       handleSubmit={handleSubmit}
       goToOrder={goToOrder}
@@ -90,4 +81,16 @@ const Add = ({
   )
 }
 
-export default withRouter(Add)
+const mapStateToProps = (state) => {
+  const status = pathOr([], ['status', 'source'], state)
+  return ({
+    status,
+  })
+}
+
+const enhanced = compose(
+  connect(mapStateToProps),
+  withRouter,
+)
+
+export default enhanced(Add)

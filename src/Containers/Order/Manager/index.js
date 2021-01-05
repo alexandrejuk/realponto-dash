@@ -16,7 +16,6 @@ import {
   BarChartOutlined,
   SearchOutlined,
 } from '@ant-design/icons'
-import moment from 'moment'
 
 import OrderList from './OrderList'
 import Chart from './Chart'
@@ -33,7 +32,6 @@ const options = [
   { label: <BarChartOutlined />, value: 'chart' },
 ];
 const { Title } = Typography
-const today = moment(new Date(), dateFormat)
 const initialFilterState = {
   dates: [null, null],
   pendingReview: ['Sim', 'Não'],

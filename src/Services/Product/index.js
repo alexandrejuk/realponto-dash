@@ -1,19 +1,15 @@
-import axios from 'axios'
-
-const baseUrl = 'http://localhost:3003/api'
-const token = localStorage.getItem('token')
-const headers = { Authorization: `bearer ${token}` }
+import axiosIntance from '../../utils/axiosInstance'
 
 const getAll = async (params = {}) => {
-  return await axios.get(`${baseUrl}/products`, { params, headers })
+  return await axiosIntance.get('products', { params })
 }
 
 const createProduct = async (values) => {
-  return await axios.post(`${baseUrl}/products`, values, { headers })
+  return await axiosIntance.post('/products', values)
 }
 
 const updateProduct = async (values) => {
-  return await axios.put(`${baseUrl}/products/${values.id}`, values, { headers })
+  return await axiosIntance.put(`/products/${values.id}`, values)
 }
 
 export {

@@ -150,6 +150,16 @@ const Detail = ({
     ? order.customer.document
     : ''
 
+  let isAddEvent = (
+    productMovimentation.length > 0
+    && productSelected.status.label === 'pending_analysis'
+  )
+
+  if (productMovimentation.length > 0 && productSelected.status.label === 'booking') {
+    isAddEvent = true
+  }
+
+
   return (
     <Row gutter={[16, 16]}>
       <Col span={24}>
@@ -314,9 +324,7 @@ const Detail = ({
                   <Title level={5}>Para ver as operação selecione um produto ao lado</Title>
                 )}
               </Steps>
-              {productMovimentation.length > 0 && productSelected.status.label === 'pending_analysis' && (
-                <Button onClick={selectedProductFunction} block type="text">Adicionar Evento</Button>
-              )}
+              {isAddEvent && <Button onClick={selectedProductFunction} block type="text">Adicionar Evento</Button>}
             </Col>
           </Row>
         </Card>

@@ -1,6 +1,9 @@
 import React from 'react'
 import { Menu, Layout } from 'antd'
 import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose } from 'ramda'
+
 import AdSide from '../../Components/AdSide'
 
 import {
@@ -38,6 +41,7 @@ const LayoutComponent = ({
   children,
   history,
   location,
+  company,
 }) => {
   const goTo = ({ key }) => history.push(key)
 
@@ -65,7 +69,11 @@ const LayoutComponent = ({
             </Menu.Item>
           ))}
         </Menu>
-        {location.pathname.replace('/logged/', '') !== 'plans' && <AdSide />}
+        {
+          location.pathname.replace('/logged/', '') !== 'plans'
+          && !company.subscription
+          && <AdSide />
+        }
       </Sider>
       <Layout >
         <Content
@@ -81,4 +89,13 @@ const LayoutComponent = ({
   )
 }
 
-export default withRouter(LayoutComponent)
+const mapStateToProps = ({ user, company }) => ({
+  company,
+})
+
+const enhanced = compose(
+  connect(mapStateToProps),
+  withRouter,
+)
+
+export default enhanced(LayoutComponent)

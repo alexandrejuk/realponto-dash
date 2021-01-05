@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
+import { compose, isEmpty } from 'ramda'
+
 import ManagerContainer from '../../../Containers/Product/Manager'
 import {
   createProduct,
@@ -6,7 +9,17 @@ import {
   updateProduct,
 } from '../../../Services/Product'
 
-const Manager = () => {
+const initialFilterState = {
+  activated: ['Ativo', 'Inativo'],
+  name: '',
+}
+
+const Manager = ({
+  productSearch,
+  setProductSearch,
+  updateProductSearch,
+  cleanProductSearch,
+}) => {
   const [products, setProducts] = useState({})
   const [page, setPage] = useState(1)
 
@@ -14,10 +27,30 @@ const Manager = () => {
     getAllProducts()
   }, [])
 
+  const buildProductSearch = (values) => {
+    const { name, activated } = values
+    const checkedActivated = (
+      activated && activated.length < 2 && activated.length !== 0
+       ? {
+          activated: activated[0] === 'Inativo' ? false : true,
+        }
+       : { }
+    )
+
+    const checkedName = isEmpty(name) ? {} : { name }
+
+    return ({
+      ...checkedActivated,
+      ...checkedName,
+      page,
+      limit: 25
+    })
+  }
+
 
   const getAllProducts = async () => {
     try {
-      const { data } = await getAll({})
+      const { data } = await getAll(buildProductSearch(productSearch))
       setProducts(data)
     } catch (error) {
       console.log(error)
@@ -42,33 +75,51 @@ const Manager = () => {
     }
   }
 
-  const handleGetProductsByFilters = async(values) => {
-    const { name, activated } = values
-    const checkedActivated = (
-      activated && activated.length < 2 && activated.length !== 0
-       ? { activated:  activated[0] === 'Inativo' ? false : true }
-       : {}
-    )
 
-    const buildQuerySpec = {
-      ...checkedActivated,
-      name,
-      page,
-      limit: 25
+  const handleOnChange = ({ target }) => {
+    const { name, value } = target
+    if(name === 'activated') {
+      return setProductSearch({
+        [name]: (
+          value.length === 0
+          ? initialFilterState.activated
+          : value
+        )
+      })
     }
 
-    const { data } = await getAll(buildQuerySpec)
-    setProducts(data)
+    return setProductSearch({ [name]: value })
   }
+
+  const clearFilters = () => {
+    cleanProductSearch()
+  }
+
 
   return (
     <ManagerContainer
       products={products}
       handleSubmit={handleSubmit}
       handleSubmitUpdate={handleSubmitUpdate}
-      handleGetProductsByFilters={handleGetProductsByFilters}
+      handleGetProductsByFilters={getAllProducts}
+      handleOnChange={handleOnChange}
+      filters={productSearch}
+      clearFilters={clearFilters}
     />
   )
 }
 
-export default Manager
+const mapStateToProps = ({ productSearch }) => ({
+  productSearch,
+})
+
+const mapDispatchToProps = dispatch => ({
+  setProductSearch: payload => dispatch({ type: 'SET_PRODUCT_GLOBAL_SEARCH', payload }),
+  cleanProductSearch: () => dispatch({ type: 'CLEAN_PRODUCT_GLOBAL_SEARCH' }),
+})
+
+const enhanced = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+)
+
+export default enhanced(Manager)

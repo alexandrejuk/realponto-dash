@@ -88,6 +88,7 @@ const AddSerialNumber = ({
         layout="vertical"
         name="form_in_modal"
       >
+        <h3>{productSelected.productName}</h3>
         <Form.Item
           name="userId"
           label="Selecione o usuário"

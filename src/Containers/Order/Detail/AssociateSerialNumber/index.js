@@ -74,6 +74,7 @@ const AssociateSerialNumber = ({
         layout="vertical"
         name="form_in_modal"
       >
+        <h3>{productSelected.productName}</h3>
         <Form.Item
           name="serialNumbers"
           label="Número Sérial"

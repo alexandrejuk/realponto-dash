@@ -40,7 +40,7 @@ const AssociateSerialNumber = ({
         layout="vertical"
         name="form_in_modal"
       >
-           <Form.Item
+        <Form.Item
           name="customerId"
           label="Selecione o cliente da ordem"
           hasFeedback

@@ -50,6 +50,13 @@ const AddEvent = ({
       statusForm = statusList.filter(status => status.label === 'analysis_return')
     }
 
+    if (productSelected.status.label === 'booking') {
+      statusForm = statusList.filter(status =>
+        status.label === 'booking_return'
+        || status.label === 'delivery'
+      )
+    }
+
   return (
     <Modal
       width={350}
@@ -83,7 +90,7 @@ const AddEvent = ({
         layout="vertical"
         name="form_in_modal"
       >
-        <h1>{productSelected.productName}</h1>
+        <h3>{productSelected.productName}</h3>
         <Form.Item
           name="statusId"
           label="Selecione o evento da ordem"
@@ -103,24 +110,28 @@ const AddEvent = ({
           </Select>
         </Form.Item>
 
-        <Form.Item
-          name="userId"
-          label="Selecione o usuário da ordem"
-          hasFeedback
-          style={{ marginBottom: '4px' }}
-          required
-          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
-        >
-          <Select
-            placeholder="Selecione o usuário"
-            // onChange={changeFormValue('statusId')}
-            notFoundContent="Nenhum usuário encontrado!"
+        {
+          productSelected.status.label !== 'booking' && (
+          <Form.Item
+            name="userId"
+            label="Selecione o usuário da ordem"
+            hasFeedback
+            style={{ marginBottom: '4px' }}
+            required
+            rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
           >
-            {users && users.map(({ name, id }) => (
-              <Option key={id} value={id}>{name}</Option>
-            ))}
-          </Select>
-        </Form.Item>
+            <Select
+              placeholder="Selecione o usuário"
+              // onChange={changeFormValue('statusId')}
+              notFoundContent="Nenhum usuário encontrado!"
+            >
+              {users && users.map(({ name, id }) => (
+                <Option key={id} value={id}>{name}</Option>
+              ))}
+            </Select>
+          </Form.Item>
+          )
+        }
 
         <Form.Item
           name="quantity"

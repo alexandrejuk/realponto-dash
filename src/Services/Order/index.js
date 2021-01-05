@@ -1,35 +1,31 @@
-import axios from 'axios'
-
-const baseUrl = 'http://localhost:3003/api'
-const token = localStorage.getItem('token')
-const headers = { Authorization: `bearer ${token}` }
+import axiosIntance from '../../utils/axiosInstance'
 
 const getAllOrder = (params = {}) => {
-  return axios.get(`${baseUrl}/orders`, { params, headers })
+  return axiosIntance.get(`/orders`, { params })
 }
 
 const getOrderById = (orderId) => {
-  return axios.get(`${baseUrl}/orders/${orderId}`, { headers })
+  return axiosIntance.get(`/orders/${orderId}`)
 }
 
 const getAllOrderSummary = (params = {}) => {
-  return axios.get(`${baseUrl}/orders-summary`, { params, headers })
+  return axiosIntance.get('/orders-summary', { params })
 }
 
 const createOrder = (values) => {
-  return axios.post(`${baseUrl}/orders`, values, { headers })
+  return axiosIntance.post('/orders', values)
 }
 
 const updateOrder =  (orderId, values) => {
-  return axios.put(`${baseUrl}/orders/${orderId}`, values, { headers })
+  return axiosIntance.put(`/orders/${orderId}`, values)
 }
 
 const finished = (orderId) => {
-  return axios.put(`${baseUrl}/orders-finished/${orderId}`, {}, { headers })
+  return axiosIntance.put(`/orders-finished/${orderId}`, {})
 }
 
 const customerAssocite = (orderId, values) => {
-  return axios.put(`${baseUrl}/customer-associate/${orderId}`, values, { headers })
+  return axiosIntance.put(`/customer-associate/${orderId}`, values)
 }
 
 export {

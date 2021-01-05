@@ -10,18 +10,29 @@ import {
 import { DownOutlined } from '@ant-design/icons'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { LeftOutlined } from '@ant-design/icons'
+import { connect } from 'react-redux'
+import { compose } from 'ramda'
+
 import AdBanner from '../../Components/AdBanner'
 
 const Header = ({
   rootRoutes,
   history,
-  location
+  location,
+  loggoutUser,
+  unSetCompany,
+  unSetStatus,
+  user,
+  company,
 }) => {
 
   const handleNavegator = ({ key }) => {
     if(key === 'loggout') {
       localStorage.removeItem('token')
       localStorage.removeItem('user.name')
+      loggoutUser()
+      unSetCompany()
+      unSetStatus()
       history.push('/login')
     }
 
@@ -71,12 +82,16 @@ const Header = ({
         onClick={e => e.preventDefault()}
       >
         <Button type="link" style={{ fontSize: '14px' }}>
-          {localStorage.getItem('user.name') || 'Minha Conta'} <DownOutlined />
+          {user.name || 'Minha Conta'} <DownOutlined />
         </Button>
       </Dropdown>
       </Col>
       <Col span={24}>
-        {location.pathname.replace('/logged/', '') !== 'plans' && <AdBanner />}
+        {
+          location.pathname.replace('/logged/', '') !== 'plans'
+          && !company.subscription
+          && <AdBanner />
+          }
       </Col>
     </Row>
   )
@@ -99,4 +114,20 @@ const Header = ({
   )
 }
 
-export default withRouter(Header)
+const mapStateToProps = ({ user, company }) => ({
+  user,
+  company,
+})
+
+const mapDispatchToProps = dispatch => ({
+  loggoutUser: () => dispatch({ type: 'USER_LOGOUT' }),
+  unSetCompany: () => dispatch({ type: 'UNSET_COMPANY' }),
+  unSetStatus: () => dispatch({ type: 'UNSET_STATUS' }),
+})
+
+const enhanced = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter,
+)
+
+export default enhanced(Header)

@@ -1,23 +1,19 @@
-import axios from 'axios'
-
-const baseUrl = 'http://localhost:3003/api'
-const token = localStorage.getItem('token')
-const headers = { Authorization: `bearer ${token}` }
+import axiosIntance from '../../utils/axiosInstance'
 
 const getBySerialNumber = async (params = {}) => {
-  return await axios.get(`${baseUrl}/serials`, { params, headers })
+  return await axiosIntance.get('/serials', { params })
 }
 
 const createSerialNumbers = async (values = {}) => {
-  return await axios.post(`${baseUrl}/serials`, values, { headers })
+  return await axiosIntance.post('/serials', values)
 }
 
 const associateSerialNumber = async (values = {}) => {
-  return await axios.put(`${baseUrl}/serials-associate`, values, { headers })
+  return await axiosIntance.put('/serials-associate', values)
 }
 
 const getSerialOrderOutputs = async (params = {}) => {
-  return await axios.get(`${baseUrl}/serials`, { params, headers })
+  return await axiosIntance.get('/serials', { params })
 }
 
 
