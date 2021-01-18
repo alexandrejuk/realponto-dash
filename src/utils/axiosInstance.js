@@ -2,15 +2,14 @@ import axios from 'axios'
 
 const baseURL = 'http://localhost:3003/api'
 
-let headers = {}
+const axiosInstance = axios.create({ baseURL })
 
-if (localStorage.token) {
-  headers.Authorization = `Bearer ${localStorage.token}`
-}
-
-const axiosInstance = axios.create({
-  baseURL,
-  headers,
-})
+axiosInstance.interceptors.request.use(config => ({
+  ...config,
+  headers: {
+    ...config.headers,
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  }
+}))
 
 export default axiosInstance
